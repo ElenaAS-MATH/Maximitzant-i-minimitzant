@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programació lineal · MACS II · Seqüència 5E</title>
+<meta name="description" content="Unitat didàctica de programació lineal per a Matemàtiques Aplicades a les Ciències Socials II amb metodologia 5E, GeoGebra i problemes tipus PAU.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+/* ==========================================================================
+   VARIABLES DE DISSENY (mateixa paleta que elenaas-math.github.io)
+   ========================================================================== */
+:root{
+  --paper:#FAFAF7; --sheet:#FFFFFF; --ink:#1A1814; --ink-soft:#5C574F; --line:#E6E2DA;
+  --taronja:#EA5B0C; --taronja-text:#AC3E00; --taronja-suau:#FBEADF;
+  --fosc:#14120F; --fosc-2:#211E19;
+  --ok:#1F7A4D; --ok-bg:#E6F4EC; --ko:#B42318; --ko-bg:#FDECEB;
+  --geo:#0E6E6E; --geo-bg:#E5F3F2;   /* GeoGebra i laboratori */
+  --pau:#8A2C0D;                    /* PAU */
+  --display:"Bricolage Grotesque", system-ui, sans-serif;
+  --body:"Instrument Sans", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{margin:0;font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;font-size:1.0625rem}
+a{color:var(--taronja-text)}
+:focus-visible{outline:3px solid var(--taronja);outline-offset:2px;border-radius:4px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;margin:0 0 .5em;text-wrap:balance}
+h2{font-size:clamp(1.7rem,3.6vw,2.3rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.35rem;font-weight:700;margin-top:1.6em}
+h4{font-size:1.08rem;font-weight:700;margin-top:1.2em}
+p,li{max-width:72ch}
+.contenidor{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--mono)}
+
+/* ---------- Capçalera ---------- */
+header.top{
+  background:linear-gradient(rgba(234,91,12,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(234,91,12,.05) 1px,transparent 1px),var(--fosc);
+  background-size:36px 36px,36px 36px,auto;color:#F4F1EC;position:relative;overflow:hidden
+}
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:2rem;align-items:center;padding-top:2.4rem;padding-bottom:2.6rem}
+.eyebrow{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--taronja);margin:0 0 .6rem}
+.hero h1{font-size:clamp(2.3rem,5.5vw,3.6rem);font-weight:800;margin:0 0 .6rem;letter-spacing:-.02em}
+.hero h1 span{color:var(--taronja)}
+.hero .sub{color:#D8D3CB;max-width:52ch;margin:0 0 1rem}
+.formula{font-family:var(--mono);color:#B8B2A8;font-size:.95rem}
+.formula b{color:var(--taronja);font-weight:500}
+.hero svg{width:100%;height:auto;max-height:260px}
+.pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.pill{font-family:var(--mono);font-size:.78rem;border:1.5px solid #4A453D;color:#D8D3CB;padding:.3rem .7rem;border-radius:999px}
+
+/* ---------- Navegació de fases ---------- */
+.phases{position:sticky;top:0;z-index:30;background:var(--sheet);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(26,24,20,.04)}
+.phases ol{list-style:none;margin:0 auto;max-width:1100px;display:flex;gap:4px;overflow-x:auto;padding:8px 1.25rem;scrollbar-width:thin}
+.phases li.sep{width:1px;background:var(--line);margin:4px 6px;flex:0 0 1px}
+.phases a{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;text-decoration:none;color:var(--ink);white-space:nowrap;border:1.5px solid transparent;min-height:44px}
+.phases a:hover{background:var(--taronja-suau)}
+.phases a[aria-current="page"]{border-color:var(--taronja);background:var(--taronja-suau)}
+.phases .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:.9rem;background:var(--ink);color:#fff}
+.phases a[aria-current="page"] .n{background:var(--taronja);color:var(--fosc)}
+.phases a.x .n{background:var(--geo)}
+.phases a.pau .n{background:var(--pau)}
+.phases .lbl{display:flex;flex-direction:column;line-height:1.1}
+.phases .lbl b{font-family:var(--display);font-weight:700;font-size:.98rem}
+.phases .lbl small{font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);letter-spacing:.03em}
+
+/* ---------- Vistes ---------- */
+main{padding:2rem 0 4rem}
+.view{display:none;animation:fade .2s ease-out}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.lead{font-size:1.15rem;color:var(--ink-soft);max-width:68ch}
+.phase-tag{display:inline-flex;gap:.5rem;align-items:center;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--taronja-text);font-weight:600;margin-bottom:.4rem}
+.phase-tag i{font-style:normal;background:var(--taronja-suau);padding:.1rem .5rem;border-radius:999px}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem;margin:1.3rem 0}
+.card > h3:first-child,.card > h4:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem}
+.grid2>*{min-width:0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+.grid3>*{min-width:0}
+
+/* Blocs semàntics */
+.def,.alerta,.nota,.clau,.pregunta{border:1px solid var(--line);border-left:6px solid var(--taronja);background:var(--sheet);padding:1rem 1.2rem;margin:1.2rem 0;border-radius:0 10px 10px 0}
+.def h4,.alerta h4,.nota h4,.clau h4,.pregunta h4{margin-top:0}
+.def h4{color:var(--taronja-text)}
+.alerta{border-left-color:var(--ko);background:var(--ko-bg)} .alerta h4{color:var(--ko)}
+.nota{border-left-color:var(--geo);background:var(--geo-bg)} .nota h4{color:var(--geo)}
+.clau{border-left-color:var(--ink);background:#F3F1EC}
+.pregunta{border-left-style:dashed;background:#FFFDF9}
+.pregunta h4{color:var(--ink)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.7rem;font-weight:600;padding:.12rem .5rem;border-radius:999px;vertical-align:middle;margin-left:.35rem;letter-spacing:.03em}
+.t-a{background:#E8F1EA;color:#1F5F3C}.t-b{background:#FFF1D6;color:#7A4B00}.t-c{background:#FBE1D8;color:#8A2C0D}
+.t-pau{background:var(--pau);color:#fff}.t-geo{background:var(--geo);color:#fff}.t-ses{background:var(--ink);color:#fff}
+.passos{counter-reset:pas;list-style:none;padding-left:0}
+.passos>li{position:relative;padding-left:2.6rem;margin-bottom:.8rem}
+.passos>li::before{counter-increment:pas;content:counter(pas);position:absolute;left:0;top:.05rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--taronja);color:var(--fosc);display:grid;place-items:center;font-weight:800;font-family:var(--display);font-size:.9rem}
+
+/* Taules */
+.taula-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.95rem;background:var(--sheet)}
+th,td{border:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+th{background:#F3F1EC;font-family:var(--display);font-weight:700}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.opt td{background:var(--taronja-suau);font-weight:700}
+caption{text-align:left;font-size:.85rem;color:var(--ink-soft);padding-bottom:.4rem}
+
+/* Botons i controls */
+.btn{font-family:var(--mono);font-size:.85rem;font-weight:600;min-height:44px;padding:.55rem 1.05rem;border-radius:999px;cursor:pointer;border:1.5px solid var(--ink);background:var(--ink);color:#fff;transition:transform .12s ease,background .12s ease}
+.btn:hover{transform:translateY(-1px);background:#3A352E}
+.btn.ple{background:var(--taronja);border-color:var(--taronja);color:var(--fosc)}
+.btn.ple:hover{background:#FF6E1A}
+.btn.buit{background:transparent;color:var(--ink)}
+.btn.buit:hover{background:var(--taronja-suau)}
+.btn.petit{min-height:36px;padding:.3rem .8rem;font-size:.78rem}
+.btn[aria-pressed="true"]{background:var(--taronja);border-color:var(--taronja);color:var(--fosc)}
+.fila{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.8rem 0}
+label{font-weight:600}
+input[type=number],input[type=text],select,textarea{font:inherit;font-family:var(--mono);font-size:.95rem;padding:.45rem .6rem;border:1.5px solid #CFC9BE;border-radius:8px;background:#fff;color:var(--ink);min-height:40px}
+input[type=number]{width:6.5em}
+select{max-width:100%} .ctrl select{width:100%}
+textarea{width:100%;min-height:9em;resize:vertical}
+input[type=range]{accent-color:var(--taronja);width:100%}
+.ctrl{display:grid;gap:.25rem;min-width:0}
+.ctrl output{font-family:var(--mono);font-weight:600;color:var(--taronja-text)}
+
+/* Gràfics */
+.plot{width:100%;max-width:640px}
+.plot svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:12px;touch-action:manipulation}
+.plot svg text{font-family:var(--mono);font-size:11px;fill:var(--ink-soft)}
+.plot svg .lbl-line{font-size:11.5px;font-weight:600}
+.plot svg .vx{fill:var(--ink)} .plot svg .vx-opt{fill:var(--taronja);stroke:var(--fosc);stroke-width:1.5}
+.plot svg .vlabel{font-size:11px;fill:var(--ink);font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:3px}
+.plot-caption{font-size:.85rem;color:var(--ink-soft);margin:.4rem 0 0}
+.llegenda{display:flex;flex-wrap:wrap;gap:.4rem .9rem;font-size:.85rem;margin:.5rem 0;font-family:var(--mono)}
+.llegenda span{display:inline-flex;align-items:center;gap:.35rem}
+.llegenda i{display:inline-block;width:18px;height:3px;border-radius:2px}
+
+/* Barres de recursos (joc) */
+.barra{margin:.55rem 0}
+.barra .cap{display:flex;justify-content:space-between;font-size:.9rem;gap:.5rem}
+.barra .cap span:last-child{font-family:var(--mono)}
+.barra .pista{height:14px;border-radius:999px;background:#EFEBE4;overflow:hidden;position:relative}
+.barra .ple{height:100%;background:var(--ok);border-radius:999px;transition:width .15s ease}
+.barra.over .ple{background:var(--ko)}
+.marcador{font-family:var(--display);font-size:2rem;font-weight:800}
+.marcador small{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft);font-weight:500;display:block}
+.estat{font-family:var(--mono);font-size:.85rem;padding:.3rem .7rem;border-radius:999px;display:inline-block}
+.estat.ok{background:var(--ok-bg);color:var(--ok)} .estat.ko{background:var(--ko-bg);color:var(--ko)}
+
+/* Quiz i exercicis */
+.q{border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;margin:1rem 0;background:var(--sheet)}
+.q .enun{font-weight:600;margin:0 0 .6rem}
+.opcions{display:grid;gap:.4rem}
+.opcio{display:flex;gap:.6rem;align-items:flex-start;text-align:left;font:inherit;background:#fff;border:1.5px solid #D9D3C8;border-radius:10px;padding:.55rem .8rem;cursor:pointer;min-height:44px;color:var(--ink)}
+.opcio:hover{border-color:var(--taronja)}
+.opcio .lletra{font-family:var(--mono);font-weight:600;color:var(--taronja-text)}
+.opcio.ok{border-color:var(--ok);background:var(--ok-bg)} .opcio.ko{border-color:var(--ko);background:var(--ko-bg)}
+.feedback{margin-top:.6rem;font-size:.95rem;padding:.6rem .8rem;border-radius:8px;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:var(--ok-bg);color:#14532D} .feedback.ko{background:var(--ko-bg);color:#7F1D1D}
+.resp{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin:.6rem 0}
+.resp label{font-weight:500;font-family:var(--mono);font-size:.9rem;display:flex;gap:.4rem;align-items:center}
+input.ok{border-color:var(--ok);background:var(--ok-bg)} input.ko{border-color:var(--ko);background:var(--ko-bg)}
+.filtres{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}
+
+details{border:1px solid var(--line);border-radius:10px;padding:.6rem .9rem;margin:.7rem 0;background:#fff}
+details[open]{border-color:#BDB6AA}
+summary{cursor:pointer;font-weight:700;font-family:var(--display);min-height:32px;display:flex;align-items:center;gap:.5rem;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'▸';color:var(--taronja);transition:transform .15s ease;display:inline-block}
+details[open]>summary::before{transform:rotate(90deg)}
+.sol{border-top:1px dashed var(--line);margin-top:.6rem;padding-top:.6rem}
+
+/* PAU */
+.pau-prob{border:1px solid var(--line);border-top:6px solid var(--pau);border-radius:12px;background:#fff;padding:1.2rem 1.3rem;margin:1.5rem 0}
+.pau-prob h3{margin-top:0}
+.punts{font-family:var(--mono);font-size:.8rem;color:var(--pau);font-weight:600}
+.criteris{font-size:.92rem}
+.criteris li{margin:.2rem 0}
+
+/* Línia de temps de sessions */
+.sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin:1rem 0}
+.sessio{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem}
+.sessio b{font-family:var(--display)}
+.sessio .f{font-family:var(--mono);font-size:.72rem;color:var(--taronja-text);text-transform:uppercase;letter-spacing:.06em}
+.sessio ul{margin:.3rem 0 0;padding-left:1.1rem;font-size:.92rem}
+
+/* GeoGebra */
+.ggb-box{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;min-height:200px;position:relative}
+.ggb-box .ggb-msg{padding:1rem;font-size:.92rem;color:var(--ink-soft)}
+pre.cmd{font-family:var(--mono);font-size:.85rem;background:var(--fosc);color:#F4F1EC;padding:.9rem 1rem;border-radius:10px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;margin:.6rem 0}
+.errlab{color:var(--ko);font-family:var(--mono);font-size:.88rem}
+.veredicte{font-family:var(--display);font-size:1.2rem;font-weight:700;margin:.4rem 0}
+
+/* Autoavaluació */
+.auto-item{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;border-bottom:1px solid var(--line);padding:.55rem 0}
+.auto-item select{min-width:10em}
+
+/* Peu */
+footer{background:var(--fosc);color:#B8B2A8;padding:2rem 0 2.6rem;font-size:.88rem}
+footer a{color:#F4F1EC}
+footer h3{color:#F4F1EC;font-size:1.1rem;margin-top:0}
+footer ol{padding-left:1.2rem} footer li{margin:.25rem 0;max-width:none}
+.eas-llicencia{margin:1.4rem 0 0;line-height:1.7}
+.eas-llicencia img{width:1em;height:1em;margin-left:.2em;vertical-align:-.15em;filter:invert(1)}
+.eas-autoria{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.eas-autoria:hover{color:var(--taronja)}
+.eas-ia{max-width:min(560px,92vw);border:0;border-top:6px solid var(--taronja);border-radius:12px;padding:1.2rem 1.4rem;background:#fff;color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35);font-size:.95rem;line-height:1.55}
+.eas-ia::backdrop{background:rgba(20,18,15,.55)}
+.eas-tanca{margin-top:.8rem;font-family:var(--mono);font-size:.85rem;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:.5rem 1rem;cursor:pointer}
+
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:.3rem 0}
+
+@media (max-width:760px){
+  body{font-size:1rem}
+  .hero{grid-template-columns:1fr;padding-top:1.8rem;padding-bottom:1.6rem}
+  .hero svg{max-height:170px}
+  .phases .lbl small{display:none}
+  .auto-item{grid-template-columns:1fr}
+}
+@media print{
+  .phases,.btn,.fila .btn,.ggb-box,footer .eas-autoria{display:none!important}
+  .view{display:block!important;page-break-before:always}
+  header.top{background:#fff;color:#000}
+  details{display:block} details>*{display:block}
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= CAPÇALERA ======================= -->
+<header class="top">
+  <div class="contenidor hero">
+    <div>
+      <p class="eyebrow">MACS II · 2n de Batxillerat · Seqüència 5E</p>
+      <h1>Programació <span>lineal</span></h1>
+      <p class="sub">Recursos limitats, decisions òptimes. Aprendreu a convertir un problema real de producció, inversió o despesa en un model matemàtic i a trobar-ne la millor solució, i a justificar per què és la millor.</p>
+      <p class="formula">maximitzar <b>z = 5x + 8y</b> amb x + 2y ≤ 200 · 3x + 4y ≤ 480 · x ≤ 140</p>
+      <div class="pills"><span class="pill">8 sessions</span><span class="pill">GeoGebra</span><span class="pill">Problemes tipus PAU</span><span class="pill">Autocorrecció</span></div>
+    </div>
+    <svg viewBox="0 0 360 260" aria-hidden="true">
+      <defs><pattern id="hg" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(234,91,12,.12)"/></pattern></defs>
+      <rect width="360" height="260" fill="url(#hg)"/>
+      <path d="M30 230 L30 70 L190 110 L250 200 L250 230 Z" fill="rgba(234,91,12,.22)" stroke="#EA5B0C" stroke-width="2.5"/>
+      <g stroke="#F4F1EC" stroke-width="1.4" stroke-dasharray="6 6" opacity=".55">
+        <line x1="10" y1="66" x2="300" y2="240"/><line x1="10" y1="126" x2="200" y2="240"/><line x1="10" y1="186" x2="100" y2="240"/>
+      </g>
+      <line x1="10" y1="2" x2="350" y2="206" stroke="#EA5B0C" stroke-width="3"/>
+      <circle cx="190" cy="110" r="8" fill="#EA5B0C" stroke="#14120F" stroke-width="2"/>
+      <text x="150" y="98" fill="#F4F1EC" font-family="IBM Plex Mono" font-size="13">òptim</text>
+      <line x1="30" y1="230" x2="350" y2="230" stroke="#B8B2A8"/><line x1="30" y1="230" x2="30" y2="10" stroke="#B8B2A8"/>
+    </svg>
+  </div>
+</header>
+
+<!-- ======================= NAVEGACIÓ ======================= -->
+<nav class="phases" aria-label="Fases de la seqüència">
+  <ol>
+    <li><a href="#inici" data-v="inici"><span class="n">0</span><span class="lbl"><b>Inici</b><small>Guia</small></span></a></li>
+    <li><a href="#implica" data-v="implica"><span class="n">1</span><span class="lbl"><b>Implica't</b><small>Sessió 1</small></span></a></li>
+    <li><a href="#explora" data-v="explora"><span class="n">2</span><span class="lbl"><b>Explora</b><small>Sessions 2–3</small></span></a></li>
+    <li><a href="#explica" data-v="explica"><span class="n">3</span><span class="lbl"><b>Explica</b><small>Sessions 4–5</small></span></a></li>
+    <li><a href="#aplica" data-v="aplica"><span class="n">4</span><span class="lbl"><b>Aplica</b><small>Sessions 4–7</small></span></a></li>
+    <li><a href="#avalua" data-v="avalua"><span class="n">5</span><span class="lbl"><b>Avalua</b><small>Sessions 7–8</small></span></a></li>
+    <li class="sep" aria-hidden="true"></li>
+    <li><a href="#lab" data-v="lab" class="x"><span class="n">⌁</span><span class="lbl"><b>Laboratori</b><small>Sempre</small></span></a></li>
+    <li><a href="#pau" data-v="pau" class="pau"><span class="n">★</span><span class="lbl"><b>PAU</b><small>Sessions 6–7</small></span></a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="contenidor">
+
+<!-- =====================================================================
+     0 · INICI
+     ===================================================================== -->
+<section class="view" id="v-inici" aria-labelledby="h-inici">
+  <p class="phase-tag"><i>0</i> Abans de començar</p>
+  <h2 id="h-inici">Per què estudiar programació lineal?</h2>
+  <p class="lead">Cada dia, empreses, hospitals, ajuntaments i ONG han de decidir <b>quant</b> fer de cada cosa amb uns recursos que no donen per a tot: diners, hores, persones, espai. La programació lineal és l'eina matemàtica que respon a la pregunta <b>«quina és la millor decisió possible?»</b>, i demostra per què ho és.</p>
+
+  <div class="grid3">
+    <div class="card"><h4>Una idea amb història</h4><p>El 1939 Leonid Kantoróvitx la va formular per planificar la producció d'una fàbrica de contraxapat. El 1947 George Dantzig va crear el mètode del símplex per planificar la logística de l'exèrcit dels EUA. El 1975 Kantoróvitx i Koopmans van rebre el Nobel d'Economia per la teoria de l'assignació òptima de recursos.</p></div>
+    <div class="card"><h4>On s'utilitza avui</h4><p>Rutes de repartiment i horaris de transport públic, menús d'hospitals i escoles amb un mínim de nutrients al menor cost, carteres d'inversió, plans de producció, assignació de torns, campanyes publicitàries…</p></div>
+    <div class="card"><h4>Què hi aporteu vosaltres</h4><p>Ja sabeu traduir enunciats a equacions i resoldre sistemes pel mètode de Gauss (temes 1 i 3). Aquí hi afegim les <b>inequacions</b>: passem de «quant val exactament?» a «quins valors són possibles i quin és el millor?».</p></div>
+  </div>
+
+  <div class="alerta" id="avis-pau">
+    <h4>Avís important: programació lineal i PAU de Catalunya</h4>
+    <p>En els exàmens de MACS de Catalunya del model actual que hem revisat (convocatòries ordinària i extraordinària del 2025 i ordinària del 2026) <b>no hi ha cap exercici específic de programació lineal</b>: els quatre exercicis tracten funcions i derivades, sistemes (Gauss), matrius, probabilitat i inferència. La programació lineal sí que apareixia en convocatòries anteriors a la reforma i continua apareixent a les PAU d'altres comunitats.</p>
+    <p>Per què val la pena igualment? Perquè treballa exactament el que la PAU puntua: <b>modelitzar un context</b> (competències 1 i 6), <b>resoldre sistemes 2×2</b> per trobar vèrtexs, <b>interpretar i justificar</b> la solució. Els problemes de la pestanya PAU segueixen el format actual (exercicis de 2,5 punts, apartats raonats i un exercici 4 transversal amb opcions A/B). Consulteu les orientacions vigents al Canal Universitats abans de tancar la programació del curs.</p>
+  </div>
+
+  <h3>Què aprendreu</h3>
+  <ul>
+    <li>Representar inequacions lineals amb dues incògnites (semiplans) i sistemes d'inequacions (regió factible).</li>
+    <li>Identificar els elements d'un problema de programació lineal: variables de decisió, restriccions, funció objectiu.</li>
+    <li>Trobar els vèrtexs de la regió factible resolent sistemes 2×2.</li>
+    <li>Optimitzar amb el mètode dels vèrtexs i amb les rectes de nivell, i saber justificar per què l'òptim és en un vèrtex.</li>
+    <li>Reconèixer tots els casos: solució única, infinites solucions, problema no fitat i problema infactible.</li>
+    <li>Interpretar la solució en el context: recursos que s'esgoten, recursos que sobren i solucions enteres.</li>
+    <li>Fer servir GeoGebra per comprovar i explorar models.</li>
+  </ul>
+
+  <h3>Pla de les 8 sessions</h3>
+  <div class="sessions">
+    <div class="sessio"><span class="f">Implica't</span><br><b>Sessió 1</b><ul><li>Repte de la cooperativa (35 min)</li><li>Diagnòstic de prerequisits (15 min)</li><li>Pregunta motriu i diari d'aprenentatge</li></ul></div>
+    <div class="sessio"><span class="f">Explora</span><br><b>Sessió 2</b><ul><li>Activitat 1: semiplans (repàs)</li><li>Activitat 2: la regió factible amb GeoGebra</li></ul></div>
+    <div class="sessio"><span class="f">Explora</span><br><b>Sessió 3</b><ul><li>Activitat 3: rectes de nivell</li><li>Activitat 4: casos estranys</li><li>Posada en comú de conjectures</li></ul></div>
+    <div class="sessio"><span class="f">Explica + Aplica</span><br><b>Sessió 4</b><ul><li>Explica 3.1–3.3: elements, teorema, mètode</li><li>Aplica: bloc A</li></ul></div>
+    <div class="sessio"><span class="f">Explica + Aplica</span><br><b>Sessió 5</b><ul><li>Explica 3.4–3.7: minimitzar, tipus de solució, enters, errors</li><li>Aplica: bloc B</li></ul></div>
+    <div class="sessio"><span class="f">Aplica + PAU</span><br><b>Sessió 6</b><ul><li>Aplica: bloc C</li><li>PAU 1–3 per parelles, amb rúbrica</li></ul></div>
+    <div class="sessio"><span class="f">PAU + Avalua</span><br><b>Sessió 7</b><ul><li>PAU 4–6 (exercici 4 transversal)</li><li>Comprovació amb el Laboratori</li><li>Autoavaluació</li></ul></div>
+    <div class="sessio"><span class="f">Avalua</span><br><b>Sessió 8</b><ul><li>Prova d'unitat (format PAU, 2 exercicis)</li><li>Tiquet de sortida</li></ul></div>
+  </div>
+
+  <h3>Competències i criteris d'avaluació</h3>
+  <div class="taula-wrap"><table>
+    <thead><tr><th>Competència específica</th><th>Com es concreta en aquesta unitat</th></tr></thead>
+    <tbody>
+      <tr><td>Modelitzar i resoldre problemes</td><td>Traduir un enunciat a variables, restriccions i funció objectiu; resoldre'l pel mètode dels vèrtexs.</td></tr>
+      <tr><td>Verificar i argumentar les solucions</td><td>Comprovar que la solució compleix totes les restriccions, discutir si ha de ser entera i valorar-ne el sentit en el context.</td></tr>
+      <tr><td>Formular conjectures</td><td>A Explora, descobrir que l'òptim és en un vèrtex abans que ningú ho expliqui.</td></tr>
+      <tr><td>Pensament computacional i eines digitals</td><td>GeoGebra i el Laboratori per representar regions i comprovar resultats.</td></tr>
+      <tr><td>Connexions i context</td><td>Contextos econòmics i socials: producció, inversió, campanyes, alimentació, transport.</td></tr>
+      <tr><td>Comunicar amb rigor</td><td>Redactar la resposta amb unitats, interpretació i notació correcta.</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.9rem;color:var(--ink-soft)">Contrasteu la numeració de competències i criteris amb el currículum vigent i la concreció curricular del vostre centre.</p>
+
+  <h3>Avaluació</h3>
+  <div class="grid2">
+    <div class="card"><h4>Formativa (no puntua)</h4><p>Preguntes autocorrectives a cada fase, exercicis del banc amb comprovació immediata i autoavaluació final. Serveixen per detectar l'error abans de la prova.</p></div>
+    <div class="card"><h4>Sumativa</h4><p>Prova d'unitat amb format PAU (2 exercicis de 2,5 punts) i, opcionalment, el miniprojecte «Optimitzeu una decisió real» amb la rúbrica de la pestanya Avalua.</p></div>
+  </div>
+
+  <h3>Com fer servir aquesta pàgina</h3>
+  <ul>
+    <li>La barra de dalt segueix les fases 5E. Es poden recórrer en ordre o saltar a la que toqui.</li>
+    <li>Els recuadres de línia discontínua són <b>preguntes per pensar</b>: discutiu-les abans de continuar.</li>
+    <li>El <b>Laboratori</b> resol qualsevol problema de dues variables i genera les ordres per a GeoGebra. Ideal per comprovar, mai per substituir el raonament.</li>
+    <li>Les activitats amb GeoGebra necessiten connexió a internet. Si no carrega, cada activitat inclou les ordres per escriure-les a <a href="https://www.geogebra.org/calculator" target="_blank" rel="noopener">geogebra.org/calculator</a>.</li>
+  </ul>
+</section>
+
+<!-- =====================================================================
+     1 · IMPLICA'T
+     ===================================================================== -->
+<section class="view" id="v-implica" aria-labelledby="h-implica">
+  <p class="phase-tag"><i>1</i> Implica't · Sessió 1</p>
+  <h2 id="h-implica">El repte de la cooperativa</h2>
+  <p class="lead">El vostre grup ha muntat una cooperativa per finançar el viatge de final de curs. Estamparem i vendrem <b>samarretes</b> i <b>dessuadores</b> amb el logotip de l'institut. Quantes n'hem de fer de cada per guanyar el màxim?</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Les dades</h3>
+      <div class="taula-wrap"><table>
+        <thead><tr><th></th><th class="num">Samarreta</th><th class="num">Dessuadora</th><th class="num">Disponible</th></tr></thead>
+        <tbody>
+          <tr><td>Cost del material</td><td class="num">5 €</td><td class="num">10 €</td><td class="num">1.000 € de pressupost</td></tr>
+          <tr><td>Temps a la planxa d'estampar</td><td class="num">3 min</td><td class="num">4 min</td><td class="num">480 min (8 h)</td></tr>
+          <tr><td>Demanda (enquesta a l'institut)</td><td class="num">com a màxim 140</td><td class="num">–</td><td class="num"></td></tr>
+          <tr><td><b>Benefici per peça</b></td><td class="num"><b>5 €</b></td><td class="num"><b>8 €</b></td><td></td></tr>
+        </tbody>
+      </table></div>
+      <div class="pregunta"><h4>Abans de tocar res</h4><p>Escriviu individualment, en 1 minut, la vostra aposta: quantes samarretes i quantes dessuadores faríeu? Per què?</p></div>
+    </div>
+    <div class="card" id="joc">
+      <h3>Proveu-ho</h3>
+      <div class="ctrl"><label for="jx">Samarretes, x = <output id="jxo">0</output></label><input type="range" id="jx" min="0" max="200" value="0"></div>
+      <div class="ctrl"><label for="jy">Dessuadores, y = <output id="jyo">0</output></label><input type="range" id="jy" min="0" max="120" value="0"></div>
+      <div class="fila"><label for="jxn" class="sr">x</label><input type="number" id="jxn" min="0" max="200" value="0" aria-label="Samarretes"><label for="jyn" class="sr">y</label><input type="number" id="jyn" min="0" max="120" value="0" aria-label="Dessuadores"></div>
+      <div id="jbarres"></div>
+      <div class="fila" style="justify-content:space-between">
+        <div class="marcador" id="jbenef">0 €<small>benefici</small></div>
+        <span class="estat ok" id="jestat">Pla viable</span>
+      </div>
+      <div class="fila"><button class="btn ple" id="jreg">Registra la proposta</button><button class="btn buit petit" id="jreset">Esborra el registre</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Les vostres propostes</h3>
+    <div class="grid2">
+      <div><div class="plot" id="jplot"></div><p class="plot-caption">Cada punt és una proposta: verd si és viable, vermell si incompleix alguna condició.</p></div>
+      <div>
+        <div class="taula-wrap"><table id="jtaula"><thead><tr><th>#</th><th class="num">x</th><th class="num">y</th><th class="num">Benefici</th><th>Viable?</th></tr></thead><tbody></tbody></table></div>
+        <button class="btn buit petit" id="jrevela" aria-pressed="false">Mostra la regió de plans viables</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pregunta">
+    <h4>Per discutir en grup (10 min)</h4>
+    <ol>
+      <li>Hi ha qui ha pensat «les dessuadores donen més benefici, fem-ne tantes com puguem». Quin benefici dona aquesta estratègia? I «fem totes les samarretes que es poden vendre i després dessuadores»?</li>
+      <li>On són, al gràfic, les vostres millors propostes? Al mig dels punts verds o a la vora?</li>
+      <li>Com podríeu <b>estar segurs</b> que una proposta és la millor sense provar-les totes? (Hi ha més de 10.000 parelles possibles.)</li>
+    </ol>
+  </div>
+
+  <div class="clau"><h4>Pregunta motriu de la unitat</h4><p>Quan els recursos són limitats i hem de triar quant fer de cada cosa, <b>com trobem la millor decisió i com demostrem que no n'hi ha cap de millor?</b> Al final de la seqüència hi tornarem i la respondreu amb arguments matemàtics.</p></div>
+
+  <h3>Diagnòstic: què necessitareu</h3>
+  <p>Cinc preguntes ràpides sobre rectes i sistemes. Si en falleu més d'una, repasseu el tema 3 abans de la sessió 2.</p>
+  <div id="quiz-diag"></div>
+</section>
+
+<!-- =====================================================================
+     2 · EXPLORA
+     ===================================================================== -->
+<section class="view" id="v-explora" aria-labelledby="h-explora">
+  <p class="phase-tag"><i>2</i> Explora · Sessions 2 i 3</p>
+  <h2 id="h-explora">Investigueu com és el conjunt de decisions possibles</h2>
+  <p class="lead">Ara no us donarem cap regla. Explorareu, fareu conjectures i les posareu a prova. Treballeu per parelles i apunteu les conclusions al quadern.</p>
+
+  <!-- Activitat 1 -->
+  <div class="card">
+    <h3 style="margin-top:0">Activitat 1 · Una inequació, mig pla <span class="tag t-ses">Sessió 2</span></h3>
+    <p>Recordeu de 1r: una equació \(ax+by=c\) és una recta. Què passa amb una <b>inequació</b> \(ax+by\le c\)? Escriviu els coeficients, feu clic sobre el gràfic per provar punts i observeu.</p>
+    <div class="grid2">
+      <div>
+        <div class="fila">
+          <input type="number" id="sa" value="2" step="any" aria-label="Coeficient a"> <span class="mono">x +</span>
+          <input type="number" id="sb" value="1" step="any" aria-label="Coeficient b"> <span class="mono">y</span>
+          <select id="sop" aria-label="Signe"><option value="<=">≤</option><option value=">=">≥</option></select>
+          <input type="number" id="sc" value="6" step="any" aria-label="Terme independent c">
+        </div>
+        <div class="fila"><button class="btn buit petit" id="sombra" aria-pressed="false">Ombreja la solució</button><button class="btn buit petit" id="sorig">Prova el punt (0, 0)</button></div>
+        <div id="sinfo" class="nota" style="min-height:5em"><h4>Punt provat</h4><p>Feu clic al gràfic.</p></div>
+      </div>
+      <div class="plot" id="splot"></div>
+    </div>
+    <div class="pregunta"><h4>Conjectures</h4><ol>
+      <li>Els punts que compleixen la inequació, on són respecte de la recta?</li>
+      <li>Per decidir quin costat és, n'hi ha prou amb provar <b>un sol punt</b>? Per què? Quan no serveix el (0, 0)?</li>
+      <li>Què canvia si passem de ≤ a ≥? I si multipliquem tota la inequació per −1?</li>
+    </ol></div>
+  </div>
+
+  <!-- Activitat 2 -->
+  <div class="card">
+    <h3 style="margin-top:0">Activitat 2 · Totes les condicions alhora <span class="tag t-ses">Sessió 2</span></h3>
+    <p>Tornem a la cooperativa. Cada condició de l'enunciat és una inequació. Activeu-les una a una i mireu com es va retallant el conjunt de plans possibles.</p>
+    <div class="grid2">
+      <div>
+        <div id="rchecks" class="opcions"></div>
+        <div class="fila"><button class="btn buit petit" id="rvx" aria-pressed="false">Mostra els vèrtexs</button></div>
+        <div class="pregunta"><h4>Preguntes</h4><ol>
+          <li>Per què el pressupost \(5x+10y\le 1000\) es pot escriure com \(x+2y\le 200\)?</li>
+          <li>Per què calen \(x\ge 0\) i \(y\ge 0\) si l'enunciat no ho diu?</li>
+          <li>Quina forma té la regió? Quants «cantons» (vèrtexs) té? Com calcularíeu les coordenades exactes del cantó on es tallen el pressupost i el temps?</li>
+        </ol></div>
+      </div>
+      <div class="plot" id="rplot"></div>
+    </div>
+    <h4>Ara amb GeoGebra <span class="tag t-geo">GeoGebra</span></h4>
+    <p>A GeoGebra, una inequació s'escriu directament a la barra d'entrada i se n'ombreja la solució. Per combinar condicions s'usa <span class="mono">&amp;&amp;</span> («i»). Escriviu-les una a una, i després la regió completa.</p>
+    <pre class="cmd">x + 2y &lt;= 200
+3x + 4y &lt;= 480
+R: (x + 2y &lt;= 200) &amp;&amp; (3x + 4y &lt;= 480) &amp;&amp; (x &lt;= 140) &amp;&amp; (x &gt;= 0) &amp;&amp; (y &gt;= 0)
+A = Intersect(x + 2y = 200, 3x + 4y = 480)</pre>
+    <div class="ggb-box" id="ggb-regio" data-ggb="regio" style="height:440px"><p class="ggb-msg">GeoGebra es carregarà quan obriu aquesta fase…</p></div>
+    <div class="fila"><button class="btn buit petit" data-ggbload="regio">Carrega la regió de la cooperativa</button><button class="btn buit petit" data-ggbreset="regio">Pantalla en blanc</button></div>
+  </div>
+
+  <!-- Activitat 3 -->
+  <div class="card">
+    <h3 style="margin-top:0">Activitat 3 · La recta del benefici <span class="tag t-ses">Sessió 3</span></h3>
+    <p>Tots els plans que donen el mateix benefici \(k\) compleixen \(5x+8y=k\): és una recta. Moveu \(k\) i observeu.</p>
+    <div class="grid2">
+      <div>
+        <div class="ctrl"><label for="kk">Benefici k = <output id="kko">400</output> €</label><input type="range" id="kk" min="0" max="1200" step="10" value="400"></div>
+        <div class="grid2" style="gap:.6rem;margin-top:.6rem">
+          <div class="ctrl"><label for="kp">Benefici samarreta: <output id="kpo">5</output> €</label><input type="range" id="kp" min="1" max="15" value="5"></div>
+          <div class="ctrl"><label for="kq">Benefici dessuadora: <output id="kqo">8</output> €</label><input type="range" id="kq" min="1" max="15" value="8"></div>
+        </div>
+        <p id="kinfo" class="veredicte"></p>
+        <div class="fila"><button class="btn buit petit" id="kvals" aria-pressed="false">Valor del benefici a cada vèrtex</button></div>
+        <div id="ktaula"></div>
+      </div>
+      <div class="plot" id="kplot"></div>
+    </div>
+    <div class="pregunta"><h4>Conjectures</h4><ol>
+      <li>Com són entre elles totes les rectes de nivell? Què passa amb la recta quan \(k\) augmenta?</li>
+      <li>Quin és el darrer punt de la regió que «toca» la recta abans de sortir-ne? Què té d'especial?</li>
+      <li>Canvieu els beneficis per peça. L'òptim sempre cau en un cantó? Proveu samarreta 3 € i dessuadora 4 €: què passa?</li>
+    </ol></div>
+    <h4>Ara amb GeoGebra <span class="tag t-geo">GeoGebra</span></h4>
+    <pre class="cmd">k = Slider(0, 1200, 10)
+z: 5x + 8y = k</pre>
+    <div class="ggb-box" id="ggb-nivell" data-ggb="nivell" style="height:440px"><p class="ggb-msg">GeoGebra es carregarà quan obriu aquesta fase…</p></div>
+    <p style="font-size:.9rem;color:var(--ink-soft)">Animeu el lliscador (botó ▶ del lliscador a la vista algebraica) i observeu per quin punt surt la recta de la regió.</p>
+  </div>
+
+  <!-- Activitat 4 -->
+  <div class="card">
+    <h3 style="margin-top:0">Activitat 4 · Casos estranys <span class="tag t-ses">Sessió 3</span></h3>
+    <p>Tres situacions que trenquen el que semblava evident. Per a cadascuna, decidiu: hi ha solució? N'hi ha una o moltes?</p>
+    <div class="fila" id="casos" role="group" aria-label="Casos"></div>
+    <div class="grid2">
+      <div id="casinfo"></div>
+      <div class="plot" id="casplot"></div>
+    </div>
+  </div>
+
+  <div class="clau"><h4>Posada en comú (final de la sessió 3)</h4>
+    <p>Cada parella escriu a la pissarra les seves dues millors conjectures. Les classifiquem en: <i>segur que és cert</i>, <i>potser</i>, <i>fals (tenim un contraexemple)</i>. A la fase Explica en comprovarem la validesa.</p></div>
+  <div id="quiz-explora"></div>
+</section>
+
+<!-- =====================================================================
+     3 · EXPLICA
+     ===================================================================== -->
+<section class="view" id="v-explica" aria-labelledby="h-explica">
+  <p class="phase-tag"><i>3</i> Explica · Sessions 4 i 5</p>
+  <h2 id="h-explica">Programació lineal, pas a pas</h2>
+  <p class="lead">Posem nom i rigor al que heu descobert. Al final d'aquesta fase heu de saber resoldre qualsevol problema de dues variables i justificar-ne la solució.</p>
+
+  <h3>3.1 Inequacions i sistemes d'inequacions</h3>
+  <div class="def"><h4>Semiplà</h4>
+    <p>El conjunt de solucions d'una inequació lineal \(ax+by\le c\) (o \(\ge\)) és un <b>semiplà</b>: una de les dues meitats del pla que separa la recta \(ax+by=c\). Si la desigualtat no és estricta, la recta en forma part.</p>
+    <p><b>Per saber quin semiplà és:</b> tria un punt que no sigui de la recta (sovint l'origen) i substitueix-lo. Si compleix la inequació, el seu costat és la solució; si no, és l'altre.</p></div>
+  <div class="def"><h4>Regió factible</h4>
+    <p>La solució d'un <b>sistema d'inequacions</b> és la intersecció de tots els semiplans. En programació lineal s'anomena <b>regió factible</b>: el conjunt de totes les decisions possibles. Pot ser <b>fitada</b> (un polígon), <b>no fitada</b> (s'estén indefinidament) o <b>buida</b>. Els seus «cantons» són els <b>vèrtexs</b>.</p></div>
+
+  <h3>3.2 Elements d'un problema de programació lineal</h3>
+  <div class="taula-wrap"><table>
+    <thead><tr><th>Element</th><th>Què és</th><th>A la cooperativa</th></tr></thead>
+    <tbody>
+      <tr><td><b>Variables de decisió</b></td><td>Les quantitats que hem de decidir.</td><td>\(x\) = nombre de samarretes, \(y\) = nombre de dessuadores</td></tr>
+      <tr><td><b>Funció objectiu</b></td><td>La quantitat que volem maximitzar o minimitzar, expressada com a funció lineal.</td><td>\(z = 5x+8y\) (benefici, en €), a maximitzar</td></tr>
+      <tr><td><b>Restriccions</b></td><td>Les limitacions, expressades com a inequacions lineals.</td><td>\(x+2y\le200,\ 3x+4y\le480,\ x\le140,\ x\ge0,\ y\ge0\)</td></tr>
+      <tr><td><b>Solució òptima</b></td><td>El punt de la regió factible on la funció objectiu és màxima (o mínima).</td><td>\((80,\,60)\), amb \(z=880\) €</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>3.3 El teorema fonamental i el mètode dels vèrtexs</h3>
+  <div class="clau"><h4>Teorema fonamental de la programació lineal</h4>
+    <p>Si la funció objectiu té òptim (màxim o mínim) en la regió factible, aquest s'assoleix <b>en un vèrtex</b>. Si s'assoleix en dos vèrtexs consecutius, s'assoleix també en <b>tots els punts del costat</b> que els uneix (infinites solucions).</p>
+    <p><b>Per què?</b> Les rectes de nivell \(px+qy=k\) són paral·leles. Si movem la recta en el sentit en què \(k\) creix, l'últim punt de la regió que toca és un vèrtex, o tot un costat si la recta hi és paral·lela. Això és el que heu vist a l'activitat 3.</p>
+    <p><b>Atenció:</b> si la regió no és fitada, l'òptim pot no existir. Primer cal comprovar-ho (vegeu 3.5).</p></div>
+
+  <h4>Protocol de resolució</h4>
+  <ol class="passos">
+    <li><b>Taula de dades.</b> Organitzeu la informació: files = recursos, columnes = productes.</li>
+    <li><b>Variables.</b> Definiu-les amb paraules i unitats: «\(x\) = nombre de samarretes».</li>
+    <li><b>Funció objectiu</b> i si es maximitza o es minimitza.</li>
+    <li><b>Restriccions</b>, incloses les de no negativitat. Simplifiqueu-les si podeu.</li>
+    <li><b>Representeu la regió factible</b>: cada recta amb dos punts (sovint, els talls amb els eixos) i el semiplà amb un punt de prova.</li>
+    <li><b>Calculeu els vèrtexs</b> resolent el sistema 2×2 de les dues rectes que s'hi tallen.</li>
+    <li><b>Avalueu la funció objectiu</b> a cada vèrtex (o useu rectes de nivell). Si la regió no és fitada, comproveu primer si l'òptim existeix.</li>
+    <li><b>Responeu en context</b>: quantes unitats, quin benefici o cost, i què passa amb els recursos.</li>
+  </ol>
+
+  <div class="card">
+    <h4 style="margin-top:0">Exemple resolt · La cooperativa</h4>
+    <p><b>Variables:</b> \(x\) = samarretes, \(y\) = dessuadores. <b>Objectiu:</b> maximitzar \(z=5x+8y\).</p>
+    <p><b>Restriccions:</b></p>
+    \[\begin{cases} 5x+10y\le 1000 \;\Leftrightarrow\; x+2y\le 200 & \text{(pressupost)}\\ 3x+4y\le 480 & \text{(temps de planxa)}\\ x\le 140 & \text{(demanda)}\\ x\ge 0,\; y\ge 0 \end{cases}\]
+    <div class="grid2">
+      <div>
+        <p><b>Vèrtexs.</b> El més interessant és el tall del pressupost amb el temps:</p>
+        \[\begin{cases}x+2y=200\\3x+4y=480\end{cases}\ \xrightarrow{\;E_2-2E_1\;}\ x=80,\quad y=\frac{200-80}{2}=60\]
+        <p>Amb \(x=140\) i \(3x+4y=480\): \(4y=60\Rightarrow y=15\). La resta surten dels talls amb els eixos.</p>
+        <div class="taula-wrap"><table>
+          <thead><tr><th>Vèrtex</th><th class="num">\(z=5x+8y\)</th></tr></thead>
+          <tbody>
+            <tr><td>\(O(0,0)\)</td><td class="num">0</td></tr>
+            <tr><td>\(A(140,0)\)</td><td class="num">700</td></tr>
+            <tr><td>\(B(140,15)\)</td><td class="num">820</td></tr>
+            <tr class="opt"><td>\(C(80,60)\)</td><td class="num">880</td></tr>
+            <tr><td>\(D(0,100)\)</td><td class="num">800</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div><div class="plot" data-plot="coop" data-show="opt"></div><p class="plot-caption">Regió factible de la cooperativa i recta de nivell que passa per l'òptim.</p></div>
+    </div>
+    <p><b>Resposta:</b> cal fer <b>80 samarretes i 60 dessuadores</b>; el benefici màxim és de <b>880 €</b>.</p>
+    <p><b>Interpretació dels recursos:</b> pressupost \(5\cdot80+10\cdot60=1000\) € (s'esgota); planxa \(3\cdot80+4\cdot60=480\) min (s'esgota); demanda: es fan 80 samarretes de 140 possibles, de manera que en queden <b>60 sense cobrir</b>. Les dues restriccions que s'esgoten són precisament les dues rectes que formen el vèrtex òptim. No és casualitat.</p>
+    <p>Fixeu-vos que les dues estratègies «intuïtives» de la sessió 1 donaven 800 € (només dessuadores) i 820 € (totes les samarretes possibles). L'òptim no és cap dels extrems.</p>
+  </div>
+
+  <h3>3.4 Minimitzar: la campanya de l'ajuntament</h3>
+  <div class="card">
+    <p>L'ajuntament vol fer una campanya sobre el nou servei d'autobús. Cada anunci de ràdio arriba a 4.000 persones grans i a 1.000 joves; cada campanya a xarxes socials, a 1.000 grans i a 2.000 joves. Cal arribar com a mínim a 24.000 persones grans i 20.000 joves. Un anunci de ràdio costa 300 € i una campanya a xarxes, 200 €. Quina combinació és la més barata?</p>
+    <div class="grid2">
+      <div>
+        <p>\(x\) = anuncis de ràdio, \(y\) = campanyes a xarxes. Minimitzar \(C=300x+200y\) amb (en milers de persones):</p>
+        \[\begin{cases}4x+y\ge 24\\ x+2y\ge 20\\ x\ge0,\ y\ge0\end{cases}\]
+        <p>Vèrtex interior: \(y=24-4x\Rightarrow x+48-8x=20\Rightarrow x=4,\ y=8\).</p>
+        <div class="taula-wrap"><table><thead><tr><th>Vèrtex</th><th class="num">\(C\)</th></tr></thead><tbody>
+          <tr><td>\((0,24)\)</td><td class="num">4.800 €</td></tr>
+          <tr class="opt"><td>\((4,8)\)</td><td class="num">2.800 €</td></tr>
+          <tr><td>\((20,0)\)</td><td class="num">6.000 €</td></tr></tbody></table></div>
+        <p><b>Resposta:</b> 4 anuncis de ràdio i 8 campanyes a xarxes, amb un cost mínim de 2.800 €.</p>
+      </div>
+      <div><div class="plot" data-plot="campanya" data-show="opt"></div><p class="plot-caption">Regió no fitada: s'estén cap amunt i cap a la dreta.</p></div>
+    </div>
+    <div class="alerta"><h4>Compte! Té cost màxim?</h4><p>Si avaluem només els vèrtexs, diríem que el màxim és 6.000 € a \((20,0)\). <b>És fals.</b> La regió no és fitada: el punt \((100,100)\) també és factible i costa 50.000 €. Sempre es pot gastar més. En una regió no fitada, abans de mirar vèrtexs cal veure cap on «s'escapa» la regió.</p></div>
+  </div>
+  <p style="font-size:.95rem;color:var(--ink-soft)">Curiositat: el 1945 l'economista George Stigler va plantejar el «problema de la dieta» (cobrir les necessitats nutritives amb el mínim cost). Va ser un dels primers grans problemes de minimització resolts amb el mètode del símplex.</p>
+
+  <h3>3.5 Tipus de solucions</h3>
+  <div class="grid2" id="tipus"></div>
+
+  <h3>3.6 I si la solució ha de ser entera?</h3>
+  <div class="def"><h4>Solucions enteres</h4>
+    <p>Quan les variables compten objectes (autocars, persones, lots) la solució ha de ser entera. Si el vèrtex òptim no té coordenades enteres, <b>no n'hi ha prou amb arrodonir</b>: el punt arrodonit pot sortir de la regió o no ser el millor. Cal buscar els punts enters factibles propers al vèrtex, comprovar que compleixen totes les restriccions i comparar-ne el valor.</p></div>
+  <p>Exemple: si el benefici d'una samarreta fos 3 € i el d'una dessuadora 4 €, \(z=3x+4y\) és paral·lela a la restricció de temps. Totes les solucions del segment entre \((80,60)\) i \((140,15)\) donen 480 €. Però només són vàlides les enteres: \(3x+4y=480\) amb \(x\) múltiple de 4, és a dir \((80,60),(84,57),(88,54),\dots,(140,15)\): <b>16 plans òptims</b>.</p>
+
+  <h3>3.7 Errors freqüents</h3>
+  <div class="grid2">
+    <div class="alerta"><h4>Oblidar \(x\ge0,\ y\ge0\)</h4><p>Sense aquestes restriccions apareixen vèrtexs amb quantitats negatives, que no tenen sentit.</p></div>
+    <div class="alerta"><h4>Ombrejar el semiplà equivocat</h4><p>Comproveu sempre amb un punt de prova. Amb \(\ge\) i coeficients positius, la solució sol ser «cap enfora», lluny de l'origen.</p></div>
+    <div class="alerta"><h4>Prendre talls que no són vèrtexs</h4><p>Dues rectes es poden tallar fora de la regió. Abans d'avaluar un punt, comproveu que compleix <b>totes</b> les restriccions.</p></div>
+    <div class="alerta"><h4>Avaluar vèrtexs en una regió no fitada</h4><p>Pot donar un «màxim» que no existeix. Mireu el gràfic o useu les rectes de nivell.</p></div>
+    <div class="alerta"><h4>Confondre l'òptim amb el valor òptim</h4><p>L'òptim és el punt \((x,y)\); el valor òptim és \(z\). La PAU demana les dues coses i la interpretació.</p></div>
+    <div class="alerta"><h4>Respondre sense context</h4><p>«(80, 60)» no és una resposta. «80 samarretes i 60 dessuadores, amb un benefici de 880 €» sí.</p></div>
+  </div>
+
+  <h3>Comproveu-ho</h3>
+  <div id="quiz-explica"></div>
+</section>
+
+<!-- =====================================================================
+     4 · APLICA
+     ===================================================================== -->
+<section class="view" id="v-aplica" aria-labelledby="h-aplica">
+  <p class="phase-tag"><i>4</i> Aplica · Sessions 4 a 7</p>
+  <h2 id="h-aplica">Banc d'exercicis</h2>
+  <p class="lead">Tres blocs de dificultat creixent. Escriviu la resposta i comproveu-la; la solució completa és desplegable. Primer al paper, després a la pantalla.</p>
+  <div class="filtres" role="group" aria-label="Filtra per bloc">
+    <button class="btn petit" data-filtre="tots" aria-pressed="true">Tots</button>
+    <button class="btn buit petit" data-filtre="A" aria-pressed="false">Bloc A · regions</button>
+    <button class="btn buit petit" data-filtre="B" aria-pressed="false">Bloc B · optimitzar</button>
+    <button class="btn buit petit" data-filtre="C" aria-pressed="false">Bloc C · modelitzar</button>
+  </div>
+  <div id="banc"></div>
+
+  <h3>Miniprojecte opcional: optimitzeu una decisió real</h3>
+  <div class="card">
+    <p>Per grups de 3, trieu una situació propera (la cantina de l'institut, una botiga del barri, un club esportiu, la mateixa cooperativa…), obteniu-ne dades reals o versemblants i plantegeu un problema de programació lineal amb almenys tres restriccions no trivials.</p>
+    <p><b>Lliurament:</b> una pàgina amb taula de dades, model, gràfic (paper o GeoGebra), solució, interpretació i <b>una crítica del model</b>: quina simplificació hem fet? quan deixaria de ser vàlid?</p>
+    <p>S'avalua amb la rúbrica de la fase Avalua.</p>
+  </div>
+</section>
+
+<!-- =====================================================================
+     LABORATORI
+     ===================================================================== -->
+<section class="view" id="v-lab" aria-labelledby="h-lab">
+  <p class="phase-tag"><i>⌁</i> Laboratori</p>
+  <h2 id="h-lab">Laboratori de programació lineal</h2>
+  <p class="lead">Escriviu les restriccions (una per línia) i la funció objectiu. El laboratori dibuixa la regió, calcula els vèrtexs, classifica el problema i genera les ordres per a GeoGebra. Feu-lo servir per <b>comprovar</b> el que heu fet al paper.</p>
+  <div class="grid2">
+    <div class="card" style="margin-top:0">
+      <div class="ctrl"><label for="lpreset">Carrega un problema</label><select id="lpreset"></select></div>
+      <div class="ctrl" style="margin-top:.8rem"><label for="lcons">Restriccions</label>
+        <textarea id="lcons" spellcheck="false" aria-describedby="lajuda"></textarea>
+        <small id="lajuda" style="color:var(--ink-soft)">Format: <span class="mono">2x + 3y &lt;= 12</span>, <span class="mono">x &gt;= 0</span>. Accepta ≤ ≥, decimals amb coma o punt.</small></div>
+      <div class="fila"><select id="lsense" aria-label="Maximitzar o minimitzar"><option value="max">Maximitzar</option><option value="min">Minimitzar</option></select>
+        <span class="mono">z =</span><input type="number" id="lp" value="5" step="any" aria-label="Coeficient de x"><span class="mono">x +</span><input type="number" id="lq" value="8" step="any" aria-label="Coeficient de y"><span class="mono">y</span></div>
+      <div class="fila"><button class="btn ple" id="lresol">Resol</button></div>
+      <p class="errlab" id="lerr" role="alert"></p>
+      <div id="lres" aria-live="polite"></div>
+    </div>
+    <div>
+      <div class="plot" id="lplot"></div>
+      <div class="ctrl" style="margin-top:.6rem"><label for="lk">Recta de nivell z = <output id="lko">–</output></label><input type="range" id="lk" min="0" max="100" value="50"></div>
+      <div id="lleg" class="llegenda"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Ordres per a GeoGebra <span class="tag t-geo">GeoGebra</span></h3>
+    <pre class="cmd" id="lggbtxt"></pre>
+    <div class="fila"><button class="btn buit petit" id="lcopy">Copia les ordres</button><button class="btn buit petit" id="lsend">Envia-les al GeoGebra de sota</button></div>
+    <div class="ggb-box" id="ggb-lab" data-ggb="lab" style="height:460px"><p class="ggb-msg">GeoGebra es carregarà quan obriu aquesta pestanya…</p></div>
+    <div class="nota"><h4>Guió per al GeoGebra (resolució completa)</h4><ol>
+      <li>Escriviu la regió factible amb <span class="mono">R: (…) &amp;&amp; (…)</span>.</li>
+      <li>Calculeu els vèrtexs amb <span class="mono">Intersect(recta1, recta2)</span> i comproveu que són de la regió.</li>
+      <li>Escriviu la funció objectiu com a <span class="mono">f(x, y) = 5x + 8y</span> i avalueu-la: <span class="mono">f(A)</span>, <span class="mono">f(B)</span>…</li>
+      <li>Creeu el lliscador <span class="mono">k</span> i la recta <span class="mono">5x + 8y = k</span> per confirmar visualment l'òptim.</li>
+      <li>Feu una captura i enganxeu-la al quadern amb la resposta en context.</li>
+    </ol></div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     PAU
+     ===================================================================== -->
+<section class="view" id="v-pau" aria-labelledby="h-pau">
+  <p class="phase-tag"><i>★</i> Problemes tipus PAU · Sessions 6 i 7</p>
+  <h2 id="h-pau">Problemes amb format PAU</h2>
+  <p class="lead">Exercicis de 2,5 punts amb apartats, com a l'examen actual. Els enunciats són originals i s'inspiren en problemes de convocatòries anteriors de Catalunya i d'altres comunitats. Cada solució inclou els criteris de correcció.</p>
+  <div class="alerta"><h4>Recordeu</h4><p>Vegeu l'<a href="#inici" data-goto="inici">avís a la guia</a>: al model actual de la PAU de Catalunya la programació lineal no ha aparegut com a exercici propi. Aquests problemes entrenen les competències que sí s'avaluen: modelitzar, resoldre sistemes, justificar i interpretar.</p></div>
+  <div class="card">
+    <h3 style="margin-top:0">Criteris generals que aplica el tribunal</h3>
+    <ul>
+      <li>Cal <b>explicar què es fa i per què</b>. Un resultat correcte sense justificació no té la puntuació completa.</li>
+      <li>Es valora el <b>plantejament</b> (variables definides, restriccions, funció objectiu), la <b>resolució</b> i la <b>interpretació</b> en el context.</li>
+      <li>Notació i vocabulari matemàtics correctes. Calculadora permesa (sense memòria ni comunicació).</li>
+      <li>Un error de càlcul no invalida la resta si el procediment és coherent amb el resultat erroni.</li>
+    </ul>
+    <div class="fila"><button class="btn buit petit" id="cronobtn">Simulacre: cronòmetre de 22 min per exercici</button><span class="mono" id="crono" aria-live="polite"></span></div>
+  </div>
+  <div id="pau-list"></div>
+</section>
+
+<!-- =====================================================================
+     5 · AVALUA
+     ===================================================================== -->
+<section class="view" id="v-avalua" aria-labelledby="h-avalua">
+  <p class="phase-tag"><i>5</i> Avalua · Sessions 7 i 8</p>
+  <h2 id="h-avalua">Què heu après?</h2>
+  <p class="lead">Tanquem el cicle: torneu a la pregunta motriu, autoavalueu-vos i feu la prova.</p>
+
+  <div class="clau"><h4>Tornem a la pregunta motriu</h4>
+    <p>Responeu per escrit, en 5 línies com a màxim: <i>«Com trobem la millor decisió quan els recursos són limitats i com demostrem que no n'hi ha cap de millor?»</i> Feu servir les paraules <b>regió factible</b>, <b>vèrtex</b>, <b>recta de nivell</b> i <b>funció objectiu</b>.</p></div>
+
+  <h3>Autoavaluació</h3>
+  <p>Marqueu el vostre nivell. Es guarda només en aquest navegador.</p>
+  <div class="card" id="auto"></div>
+
+  <h3>Prova d'unitat (model)</h3>
+  <p>Format PAU: dos exercicis de 2,5 punts. Temps orientatiu: 45 minuts. La professora té les solucions; aquí trobareu la solució del model per practicar.</p>
+  <div id="prova"></div>
+
+  <h3>Rúbrica de resolució de problemes</h3>
+  <div class="taula-wrap"><table>
+    <thead><tr><th>Criteri</th><th>Inicial</th><th>Satisfactori</th><th>Notable</th><th>Excel·lent</th></tr></thead>
+    <tbody>
+      <tr><td><b>Plantejament</b></td><td>Variables no definides o restriccions incompletes.</td><td>Variables definides; falta alguna restricció o hi ha un signe erroni.</td><td>Model complet i correcte.</td><td>Model complet, simplificat i amb unitats; explica d'on surt cada restricció.</td></tr>
+      <tr><td><b>Representació</b></td><td>Regió incorrecta.</td><td>Rectes correctes, algun semiplà equivocat.</td><td>Regió correcta i vèrtexs identificats.</td><td>Regió correcta, escala adequada, vèrtexs etiquetats i justificats.</td></tr>
+      <tr><td><b>Resolució</b></td><td>No calcula vèrtexs o no avalua la funció.</td><td>Vèrtexs amb errors de càlcul menors.</td><td>Vèrtexs i òptim correctes.</td><td>Correcte i discuteix existència d'òptim, unicitat i solucions enteres.</td></tr>
+      <tr><td><b>Interpretació</b></td><td>Dona només un punt.</td><td>Respon en context de manera parcial.</td><td>Resposta completa en context.</td><td>A més, interpreta els recursos sobrants o esgotats i valora el model.</td></tr>
+      <tr><td><b>Comunicació</b></td><td>Desordenada, sense notació.</td><td>Comprensible amb imprecisions.</td><td>Ordenada i amb notació correcta.</td><td>Clara, rigorosa i ben justificada.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tiquet de sortida</h3>
+  <div id="quiz-sortida"></div>
+  <div class="pregunta"><h4>Metacognició</h4><p>Què us ha costat més d'aquesta unitat? Quina estratègia fareu servir a l'examen per no oblidar cap pas? Escriviu-ho al diari d'aprenentatge.</p></div>
+</section>
+
+</div>
+</main>
+
+<!-- ======================= PEU ======================= -->
+<footer>
+  <div class="contenidor">
+    <h3>Fonts i referències</h3>
+    <ol>
+      <li>Llibre de text del grup: <i>Matemàtiques aplicades a les ciències socials II</i>, Santillana, projecte Construint Mons.</li>
+      <li>Canal Universitats (Generalitat de Catalunya): estructura de l'examen de MACS, enunciats i criteris de correcció de les PAU 2025 i 2026.</li>
+      <li>Currículum de batxillerat de Catalunya, Matemàtiques aplicades a les ciències socials (portal XTEC).</li>
+      <li>Dantzig, G. B. (1963). <i>Linear Programming and Extensions</i>. Princeton University Press.</li>
+      <li>Stigler, G. J. (1945). «The Cost of Subsistence». <i>Journal of Farm Economics</i>, 27(2).</li>
+      <li>GeoGebra, <a href="https://www.geogebra.org/calculator" target="_blank" rel="noopener">calculadora gràfica</a> i <a href="https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_API" target="_blank" rel="noopener">API d'applets</a>.</li>
+    </ol>
+    <p>Les dades numèriques dels problemes són versemblants però construïdes per a l'aula. Totes les solucions s'han verificat amb aritmètica exacta.</p>
+    <p class="eas-llicencia"><button type="button" class="eas-autoria" popovertarget="eas-declaracio-ia" aria-haspopup="dialog" title="Mostra la declaració d’ús d’IA">Autoria<span aria-hidden="true">&nbsp;ⓘ</span>:</button> © 2026 by <a href="https://elenaas-math.github.io/">Elena Álvarez Spagnolo</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="Creative Commons" onerror="this.remove()"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="Reconeixement" onerror="this.remove()"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="No comercial" onerror="this.remove()"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="Sense obra derivada" onerror="this.remove()"></p>
+    <div id="eas-declaracio-ia" class="eas-ia" popover role="dialog" aria-labelledby="eas-titol-ia">
+      <p><strong id="eas-titol-ia">Declaració d’ús d’IA:</strong> aquest contingut s’ha elaborat amb el suport d’eines d’intel·ligència artificial generativa: Claude, en tasques de programació, estructuració i part de la redacció. L’autora n’ha dissenyat la proposta didàctica i n’ha revisat, adaptat i validat tot el contingut, i n’assumeix la plena responsabilitat.</p>
+      <button type="button" class="eas-tanca" popovertarget="eas-declaracio-ia" popovertargetaction="hide">Tanca</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ==========================================================================
+   1. MOTOR DE PROGRAMACIÓ LINEAL (2 variables)
+   ========================================================================== */
+const EPS = 1e-9;
+const fmt = (v, d = 2) => {
+  if (!isFinite(v)) return String(v);
+  if (Math.abs(v) < 1e-9) v = 0;
+  const r = Math.round(v * 1e6) / 1e6;
+  if (Math.abs(r - Math.round(r)) < 1e-9) return Math.round(r).toLocaleString('ca-ES');
+  // fraccions senzilles
+  for (const den of [2, 3, 4, 5, 6, 7, 8, 9, 11, 12]) {
+    const n = r * den;
+    if (Math.abs(n - Math.round(n)) < 1e-5) {
+      return (Math.round(n) < 0 ? '−' : '') + Math.abs(Math.round(n)) + '/' + den + ' ≈ ' + r.toLocaleString('ca-ES', { maximumFractionDigits: d });
+    }
+  }
+  return r.toLocaleString('ca-ES', { maximumFractionDigits: d });
+};
+/* Escriu a·x + b·y op c de manera neta (sense termes nuls ni «+ −») */
+function linTxt(a, b, op, c, ascii) {
+  const t = [];
+  const term = (k, v) => { if (Math.abs(k) < EPS) return; const n = Math.abs(k) === 1 ? '' : fmtG(Math.abs(k)); t.push((k < 0 ? (t.length ? ' - ' : '-') : (t.length ? ' + ' : '')) + n + v); };
+  term(a, 'x'); term(b, 'y');
+  const o = ascii ? op : (op === '<=' ? '≤' : '≥');
+  return t.join('') + ' ' + o + ' ' + fmtG(c);
+}
+const fmtG = v => String(Math.round(v * 1e4) / 1e4);
+/* Parell de coordenades: amb decimals, separador «;» (convenció catalana) */
+const pt = (x, y, f = fmtN) => { const d = [x, y].some(v => Math.abs(v - Math.round(v)) > 1e-9); return '(' + f(x) + (d ? '; ' : ', ') + f(y) + ')'; };
+const fmtN = v => (Math.abs(v) < 1e-9 ? 0 : Math.round(v * 100) / 100).toLocaleString('ca-ES', { maximumFractionDigits: 2 });
+
+/* Converteix "2x + 3y <= 12" en {a, b, op, c} amb a·x + b·y op c */
+function parseLin(src) {
+  let s = String(src).replace(/\s+/g, '').replace(/[−–]/g, '-').replace(/[·*]/g, '').replace(/,/g, '.')
+    .replace(/≤|=<|<=/g, '≤').replace(/≥|=>|>=/g, '≥').replace(/</g, '≤').replace(/>/g, '≥');
+  if (!s) throw 'Línia buida';
+  const m = s.match(/^([^≤≥=]+)([≤≥])([^≤≥=]+)$/);
+  if (!m) throw 'Cal un sol signe ≤ o ≥ a «' + src + '»';
+  const L = linExpr(m[1]), R = linExpr(m[3]);
+  const a = L.x - R.x, b = L.y - R.y, c = R.k - L.k;
+  if (Math.abs(a) < EPS && Math.abs(b) < EPS) throw 'La restricció «' + src + '» no té x ni y';
+  return { a, b, op: m[2] === '≤' ? '<=' : '>=', c, txt: src.trim() };
+}
+function linExpr(e) {
+  if (!/^[+-]/.test(e)) e = '+' + e;
+  const terms = e.match(/[+-][^+-]+/g);
+  if (!terms || terms.join('') !== e) throw 'No entenc «' + e + '»';
+  const r = { x: 0, y: 0, k: 0 };
+  for (const t of terms) {
+    const sg = t[0] === '-' ? -1 : 1, body = t.slice(1);
+    const mm = body.match(/^(\d*\.?\d*)(?:\/(\d+\.?\d*))?([xy]?)$/);
+    if (!mm || (mm[1] === '' && !mm[3])) throw 'No entenc el terme «' + t + '»';
+    let coef = mm[1] === '' ? 1 : parseFloat(mm[1]);
+    if (mm[2]) coef /= parseFloat(mm[2]);
+    if (!isFinite(coef)) throw 'Nombre no vàlid a «' + t + '»';
+    r[mm[3] || 'k'] += sg * coef;
+  }
+  return r;
+}
+const sat = (C, x, y) => C.every(({ a, b, op, c }) => {
+  const v = a * x + b * y, tol = 1e-7 * (1 + Math.abs(c));
+  return op === '<=' ? v <= c + tol : v >= c - tol;
+});
+/* Analitza el problema: vèrtexs, fitació i òptim */
+function analyze(C, obj, sense) {
+  const V = [];
+  for (let i = 0; i < C.length; i++) for (let j = i + 1; j < C.length; j++) {
+    const A = C[i], B = C[j], d = A.a * B.b - B.a * A.b;
+    if (Math.abs(d) < EPS) continue;
+    const x = (A.c * B.b - B.c * A.b) / d, y = (A.a * B.c - B.a * A.c) / d;
+    if (sat(C, x, y) && !V.some(v => Math.hypot(v.x - x, v.y - y) < 1e-7)) V.push({ x, y, i, j });
+  }
+  // direccions de recessió candidates
+  const cand = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  C.forEach(k => { cand.push([k.b, -k.a], [-k.b, k.a]); });
+  const inCone = ([dx, dy]) => {
+    const n = Math.hypot(dx, dy); if (n < EPS) return false;
+    dx /= n; dy /= n;
+    return C.every(({ a, b, op }) => op === '<=' ? a * dx + b * dy <= 1e-9 : a * dx + b * dy >= -1e-9);
+  };
+  const rays = cand.filter(inCone).map(([dx, dy]) => { const n = Math.hypot(dx, dy); return [dx / n, dy / n]; });
+  const bounded = rays.length === 0;
+  const res = { V, bounded, rays, status: '', optPts: [], best: null };
+  if (V.length === 0) { res.status = 'infactible'; return res; }
+  if (!obj) return res;
+  const [p, q] = obj, sg = sense === 'max' ? 1 : -1;
+  V.forEach(v => v.z = p * v.x + q * v.y);
+  if (rays.some(([dx, dy]) => sg * (p * dx + q * dy) > 1e-9)) { res.status = 'nofitat'; return res; }
+  const best = sg > 0 ? Math.max(...V.map(v => v.z)) : Math.min(...V.map(v => v.z));
+  const tol = 1e-7 * (1 + Math.abs(best));
+  res.best = best;
+  res.optPts = V.filter(v => Math.abs(v.z - best) <= tol);
+  if (res.optPts.length >= 2) res.status = 'segment';
+  else if ((Math.abs(p) > EPS || Math.abs(q) > EPS) && rays.some(([dx, dy]) => Math.abs(p * dx + q * dy) < 1e-9)) res.status = 'semirecta';
+  else res.status = 'unica';
+  if (Math.abs(p) < EPS && Math.abs(q) < EPS) res.status = 'constant';
+  return res;
+}
+/* Ordena els vèrtexs en sentit antihorari (per a taules) */
+function sortV(V) {
+  if (!V.length) return V;
+  const cx = V.reduce((s, v) => s + v.x, 0) / V.length, cy = V.reduce((s, v) => s + v.y, 0) / V.length;
+  return [...V].sort((u, v) => Math.atan2(u.y - cy, u.x - cx) - Math.atan2(v.y - cy, v.x - cx));
+}
+
+/* ==========================================================================
+   2. DIBUIX SVG
+   ========================================================================== */
+const COLORS = ['#2A6F97', '#7B4FA0', '#2F855A', '#B7791F', '#C53030', '#4A5568', '#0E6E6E', '#9C4221'];
+const NS = 'http://www.w3.org/2000/svg';
+function niceStep(range, n = 7) {
+  const raw = range / n, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+  return (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * p;
+}
+function autoView(C, extraPts = []) {
+  const pts = [...extraPts];
+  analyze(C).V.forEach(v => pts.push([v.x, v.y]));
+  C.forEach(({ a, b, c }) => {
+    if (Math.abs(a) > EPS && c / a > 0) pts.push([c / a, 0]);
+    if (Math.abs(b) > EPS && c / b > 0) pts.push([0, c / b]);
+  });
+  let X = Math.max(1, ...pts.map(p => p[0])), Y = Math.max(1, ...pts.map(p => p[1]));
+  let x0 = Math.min(0, ...pts.map(p => p[0])), y0 = Math.min(0, ...pts.map(p => p[1]));
+  const r = analyze(C);
+  const k = r.bounded ? 1.18 : 1.45;
+  X = X * k; Y = Y * k;
+  const sx = niceStep(X - x0), sy = niceStep(Y - y0);
+  x0 = x0 < 0 ? Math.floor(x0 * 1.15 / sx) * sx : -sx * 0.4;
+  y0 = y0 < 0 ? Math.floor(y0 * 1.15 / sy) * sy : -sy * 0.4;
+  return { x0, x1: Math.ceil(X / sx) * sx, y0, y1: Math.ceil(Y / sy) * sy };
+}
+function clipPoly(poly, { a, b, op, c }) {
+  const inside = ([x, y]) => op === '<=' ? a * x + b * y <= c + 1e-9 : a * x + b * y >= c - 1e-9;
+  const out = [];
+  for (let i = 0; i < poly.length; i++) {
+    const P = poly[i], Q = poly[(i + 1) % poly.length], ip = inside(P), iq = inside(Q);
+    if (ip) out.push(P);
+    if (ip !== iq) {
+      const fp = a * P[0] + b * P[1] - c, fq = a * Q[0] + b * Q[1] - c, t = fp / (fp - fq);
+      out.push([P[0] + t * (Q[0] - P[0]), P[1] + t * (Q[1] - P[1])]);
+    }
+  }
+  return out;
+}
+function lineInBox(a, b, c, v) {
+  const P = [];
+  if (Math.abs(b) > EPS) { [v.x0, v.x1].forEach(x => { const y = (c - a * x) / b; if (y >= v.y0 - 1e-9 && y <= v.y1 + 1e-9) P.push([x, y]); }); }
+  if (Math.abs(a) > EPS) { [v.y0, v.y1].forEach(y => { const x = (c - b * y) / a; if (x >= v.x0 - 1e-9 && x <= v.x1 + 1e-9) P.push([x, y]); }); }
+  if (P.length < 2) return null;
+  P.sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+  return [P[0], P[P.length - 1]];
+}
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+/* cfg: {C, view, region, colors, labels, showV, obj, k, opt (res), points, onClick, hideLines, title} */
+function draw(container, cfg) {
+  const W = 600, H = 450, ml = 48, mr = 14, mt = 14, mb = 38;
+  const v = cfg.view || autoView(cfg.C || []);
+  const sx = x => ml + (x - v.x0) / (v.x1 - v.x0) * (W - ml - mr);
+  const sy = y => H - mb - (y - v.y0) / (v.y1 - v.y0) * (H - mt - mb);
+  container.innerHTML = '';
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': cfg.title || 'Gràfic de la regió factible' }, container);
+  const clipId = 'c' + Math.random().toString(36).slice(2);
+  const cp = el('clipPath', { id: clipId }, el('defs', {}, svg));
+  el('rect', { x: ml, y: mt, width: W - ml - mr, height: H - mt - mb }, cp);
+  // graella
+  const stx = niceStep(v.x1 - v.x0, 8), sty = niceStep(v.y1 - v.y0, 7);
+  const g = el('g', {}, svg);
+  for (let x0 = Math.ceil(v.x0 / stx) * stx; x0 <= v.x1 + 1e-9; x0 += stx) {
+    const x = Math.abs(x0) < 1e-9 ? 0 : x0;
+    el('line', { x1: sx(x), y1: mt, x2: sx(x), y2: H - mb, stroke: Math.abs(x) < 1e-9 ? '#1A1814' : '#EFEBE4', 'stroke-width': Math.abs(x) < 1e-9 ? 1.4 : 1 }, g);
+    const t = el('text', { x: sx(x), y: H - mb + 16, 'text-anchor': 'middle' }, g); t.textContent = fmtN(x);
+  }
+  for (let y0 = Math.ceil(v.y0 / sty) * sty; y0 <= v.y1 + 1e-9; y0 += sty) {
+    const y = Math.abs(y0) < 1e-9 ? 0 : y0;
+    el('line', { x1: ml, y1: sy(y), x2: W - mr, y2: sy(y), stroke: Math.abs(y) < 1e-9 ? '#1A1814' : '#EFEBE4', 'stroke-width': Math.abs(y) < 1e-9 ? 1.4 : 1 }, g);
+    if (Math.abs(y) > 1e-9 || v.x0 >= 0) { const t = el('text', { x: ml - 6, y: sy(y) + 4, 'text-anchor': 'end' }, g); t.textContent = fmtN(y); }
+  }
+  const tx = el('text', { x: W - mr - 2, y: sy(0) - 6 > mt + 10 ? sy(0) - 6 : H - mb - 6, 'text-anchor': 'end', 'font-weight': 600 }, g); tx.textContent = cfg.xlabel || 'x';
+  const ty = el('text', { x: sx(0) + 6, y: mt + 12, 'font-weight': 600 }, g); ty.textContent = cfg.ylabel || 'y';
+  const body = el('g', { 'clip-path': `url(#${clipId})` }, svg);
+  const C = cfg.C || [];
+  const box = [[v.x0, v.y0], [v.x1, v.y0], [v.x1, v.y1], [v.x0, v.y1]];
+  // semiplans individuals (opcional)
+  if (cfg.halfplanes) C.forEach((k, i) => {
+    if (cfg.labelTxt && !cfg.labelTxt[i]) return;
+    const poly = clipPoly(box, k);
+    if (poly.length > 2) el('polygon', { points: poly.map(p => sx(p[0]) + ',' + sy(p[1])).join(' '), fill: (cfg.colors || COLORS)[i % 8], opacity: .1 }, body);
+  });
+  // regió
+  if (cfg.region !== false && C.length) {
+    let poly = box; C.forEach(k => { if (poly.length) poly = clipPoly(poly, k); });
+    if (poly.length > 2) el('polygon', { points: poly.map(p => sx(p[0]) + ',' + sy(p[1])).join(' '), fill: 'rgba(234,91,12,.2)', stroke: '#EA5B0C', 'stroke-width': 2, 'stroke-linejoin': 'round' }, body);
+  }
+  // rectes (les de no negativitat sense nom, en gris) + llegenda sota el gràfic
+  const legend = [];
+  if (!cfg.hideLines) C.forEach((k, i) => {
+    const seg = lineInBox(k.a, k.b, k.c, v); if (!seg) return;
+    const lb = cfg.labelTxt ? cfg.labelTxt[i] : k.txt;
+    const col = cfg.colors ? cfg.colors[i % 8] : (lb === '' ? '#A39C90' : COLORS[i % 8]);
+    el('line', { x1: sx(seg[0][0]), y1: sy(seg[0][1]), x2: sx(seg[1][0]), y2: sy(seg[1][1]), stroke: col, 'stroke-width': lb === '' && !cfg.colors ? 1.6 : 2.2 }, body);
+    if (cfg.labels !== false && lb) legend.push(`<span><i style="background:${col}"></i>${lb}${/[≤≥<>]/.test(lb) ? '' : ': ' + linTxt(k.a, k.b, k.op, k.c)}</span>`);
+  });
+  if (cfg.obj && cfg.k != null && cfg.labels !== false) legend.push('<span><i style="background:#1A1814;height:0;border-top:2.5px dashed #1A1814"></i>recta de nivell</span>');
+  if (legend.length) { const d = document.createElement('div'); d.className = 'llegenda'; d.innerHTML = legend.join(''); container.appendChild(d); }
+  // recta de nivell
+  if (cfg.obj && cfg.k != null) {
+    const seg = lineInBox(cfg.obj[0], cfg.obj[1], cfg.k, v);
+    if (seg) el('line', { x1: sx(seg[0][0]), y1: sy(seg[0][1]), x2: sx(seg[1][0]), y2: sy(seg[1][1]), stroke: '#1A1814', 'stroke-width': 2.4, 'stroke-dasharray': '8 6' }, body);
+  }
+  // segment òptim
+  if (cfg.opt && cfg.opt.status === 'segment') {
+    const P = cfg.opt.optPts;
+    el('line', { x1: sx(P[0].x), y1: sy(P[0].y), x2: sx(P[1].x), y2: sy(P[1].y), stroke: '#EA5B0C', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: .75 }, body);
+  }
+  // punts lliures
+  (cfg.points || []).forEach(p => {
+    el('circle', { cx: sx(p.x), cy: sy(p.y), r: p.r || 5, fill: p.fill || '#1A1814', stroke: '#fff', 'stroke-width': 1.5, opacity: p.op || 1 }, body);
+  });
+  // vèrtexs
+  if (cfg.showV) {
+    const r = analyze(C, cfg.obj, cfg.sense);
+    r.V.forEach(p => {
+      const isOpt = cfg.opt && cfg.opt.optPts && cfg.opt.optPts.some(o => Math.hypot(o.x - p.x, o.y - p.y) < 1e-7);
+      el('circle', { cx: sx(p.x), cy: sy(p.y), r: isOpt ? 7 : 4.5, class: isOpt ? 'vx-opt' : 'vx' }, svg);
+      const t = el('text', { x: sx(p.x) + 8, y: sy(p.y) - 8, class: 'vlabel' }, svg);
+      t.textContent = pt(p.x, p.y);
+    });
+  }
+  if (cfg.onClick) {
+    svg.style.cursor = 'crosshair';
+    svg.addEventListener('click', e => {
+      const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+      const x = v.x0 + (q.x - ml) / (W - ml - mr) * (v.x1 - v.x0), y = v.y0 + (H - mb - q.y) / (H - mt - mb) * (v.y1 - v.y0);
+      cfg.onClick(Math.round(x * 2) / 2, Math.round(y * 2) / 2);
+    });
+  }
+  return { svg, v };
+}
+const C_ = arr => arr.map(parseLin);
+
+/* ==========================================================================
+   3. PROBLEMES (dades compartides: gràfics, laboratori i solucions)
+   Totes les solucions s'han verificat amb aritmètica racional exacta.
+   ========================================================================== */
+const PROB = {
+  coop: { nom: 'Cooperativa (Implica\'t / Explica)', cons: ['x + 2y <= 200', '3x + 4y <= 480', 'x <= 140', 'x >= 0', 'y >= 0'], obj: [5, 8], sense: 'max', lbl: ['pressupost', 'planxa', 'demanda', '', ''] },
+  coop34: { nom: 'Cooperativa amb z = 3x + 4y (infinites)', cons: ['x + 2y <= 200', '3x + 4y <= 480', 'x <= 140', 'x >= 0', 'y >= 0'], obj: [3, 4], sense: 'max', lbl: ['pressupost', 'planxa', 'demanda', '', ''] },
+  campanya: { nom: 'Campanya de l\'ajuntament (mínim)', cons: ['4x + y >= 24', 'x + 2y >= 20', 'x >= 0', 'y >= 0'], obj: [300, 200], sense: 'min', lbl: ['grans', 'joves', '', ''] },
+  campanyaMax: { nom: 'Campanya: cost màxim? (no fitat)', cons: ['4x + y >= 24', 'x + 2y >= 20', 'x >= 0', 'y >= 0'], obj: [300, 200], sense: 'max', lbl: ['grans', 'joves', '', ''] },
+  buida: { nom: 'Regió buida (infactible)', cons: ['x + y >= 6', '2x + y <= 4', 'x >= 0', 'y >= 0'], obj: [1, 1], sense: 'max', lbl: ['x + y ≥ 6', '2x + y ≤ 4', '', ''] },
+  pau1: { nom: 'PAU 1 · El forn', cons: ['3x + 2y <= 36', 'x + 2y <= 20', 'y >= 2', 'x >= 0'], obj: [40, 30], sense: 'max', lbl: ['farina', 'forn', 'encàrrec', ''] },
+  pau1b: { nom: 'PAU 1b · El forn amb coca a 80 €', cons: ['3x + 2y <= 36', 'x + 2y <= 20', 'y >= 2', 'x >= 0'], obj: [40, 80], sense: 'max', lbl: ['farina', 'forn', 'encàrrec', ''] },
+  pau2: { nom: 'PAU 2 · Autocars', cons: ['50x + 30y >= 480', 'x + y <= 12', 'x <= 8', 'x >= 0', 'y >= 0'], obj: [700, 400], sense: 'min', lbl: ['places', 'conductors', 'grans ≤ 8', '', ''] },
+  pau2b: { nom: 'PAU 2b · Autocars a 600 €', cons: ['50x + 30y >= 480', 'x + y <= 12', 'x <= 8', 'x >= 0', 'y >= 0'], obj: [600, 400], sense: 'min', lbl: ['places', 'conductors', 'grans ≤ 8', '', ''] },
+  pau3: { nom: 'PAU 3 · Inversió (milers d\'€)', cons: ['x + y <= 30', 'x - 2y <= 0', 'x >= 6', 'y <= 20', 'y >= 0'], obj: [50, 30], sense: 'max', lbl: ['total', 'risc', 'mínim A', 'màxim B', ''] },
+  pau4: { nom: 'PAU 4 · Regió donada', cons: ['x + y >= 2', 'x <= 6', 'y <= 5', 'x + y <= 8', 'x >= 0', 'y >= 0'], obj: [2, 3], sense: 'max', lbl: ['x + y ≥ 2', 'x ≤ 6', 'y ≤ 5', 'x + y ≤ 8', '', ''] },
+  pau5: { nom: 'PAU 5 · Protectora (pinso)', cons: ['2x + y >= 12', 'x + 3y >= 15', 'x + y >= 9', 'x >= 0', 'y >= 0'], obj: [20, 15], sense: 'min', lbl: ['proteïna', 'fibra', 'volum', '', ''] },
+  pau6: { nom: 'PAU 6 · Cooperativa agrària', cons: ['4x + 2y <= 80', 'x + y <= 24', 'x + 2y <= 36', 'x >= 0', 'y >= 0'], obj: [30, 25], sense: 'max', lbl: ['fruita', 'sucre', 'hores', '', ''] },
+  e1: { nom: 'Prova · Casal d\'estiu', cons: ['2x + y <= 16', 'x + y <= 10', 'y >= 2', 'x >= 0'], obj: [400, 250], sense: 'max', lbl: ['monitors', 'aules', 'tarda ≥ 2', ''] },
+  e2: { nom: 'Prova · Banc d\'aliments', cons: ['2x + y >= 40', 'x + 2y >= 35', 'x + y <= 30', 'x >= 0', 'y >= 0'], obj: [12, 10], sense: 'min', lbl: ['llegums', 'arròs', 'transport', '', ''] },
+  b3: { nom: 'Banc · regió A3', cons: ['x + y <= 5', '-x + y <= 1', 'x >= 0', 'y >= 0'], obj: [3, 2], sense: 'max', lbl: ['x + y ≤ 5', 'y ≤ x + 1', '', ''] },
+  b7: { nom: 'Banc · regió no fitada B3', cons: ['x + y >= 3', 'y >= 1', 'x >= 0'], obj: [2, 1], sense: 'min', lbl: ['x + y ≥ 3', 'y ≥ 1', ''] },
+  b8: { nom: 'Banc · feines d\'estiu C1', cons: ['x + y <= 20', 'y <= 8', 'x >= 6', 'y >= 0'], obj: [10, 15], sense: 'max', lbl: ['hores', 'classes', 'monitor ≥ 6', ''] },
+};
+Object.values(PROB).forEach(p => p.C = C_(p.cons));
+
+/* Renderitza tots els gràfics estàtics marcats amb data-plot */
+function renderStaticPlots(root = document) {
+  root.querySelectorAll('[data-plot]').forEach(div => {
+    if (div.dataset.done) return;
+    const P = PROB[div.dataset.plot]; if (!P) return;
+    const show = div.dataset.show || '';
+    const r = analyze(P.C, P.obj, P.sense);
+    const cfg = { C: P.C, labelTxt: P.lbl, showV: true, title: P.nom };
+    if (show.includes('opt') && r.best != null) { cfg.obj = P.obj; cfg.k = r.best; cfg.opt = r; cfg.sense = P.sense; }
+    if (show.includes('noopt')) { cfg.showV = !show.includes('nov'); }
+    draw(div, cfg);
+    div.dataset.done = 1;
+  });
+}
+
+/* ==========================================================================
+   4. NAVEGACIÓ ENTRE FASES
+   ========================================================================== */
+const VIEWS = ['inici', 'implica', 'explora', 'explica', 'aplica', 'avalua', 'lab', 'pau'];
+function show(id) {
+  if (!VIEWS.includes(id)) id = 'inici';
+  document.querySelectorAll('.view').forEach(s => s.classList.toggle('active', s.id === 'v-' + id));
+  document.querySelectorAll('.phases a').forEach(a => { if (a.dataset.v === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  const cur = document.querySelector('.phases a[aria-current]'); if (cur) cur.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  const sec = document.getElementById('v-' + id);
+  renderStaticPlots(sec);
+  // GeoGebra només quan la vista és visible
+  sec.querySelectorAll('[data-ggb]').forEach(b => GGB.ensure(b.dataset.ggb));
+  if (id === 'lab') labSolve();
+}
+window.addEventListener('hashchange', () => { show(location.hash.slice(1)); window.scrollTo({ top: document.querySelector('.phases').offsetTop, behavior: 'smooth' }); });
+document.addEventListener('click', e => { const g = e.target.closest('[data-goto]'); if (g) { e.preventDefault(); location.hash = g.dataset.goto; } });
+
+/* ==========================================================================
+   5. GEOGEBRA (càrrega diferida)
+   ========================================================================== */
+const GGB = {
+  apis: {}, pending: {}, queue: {}, loading: null,
+  presets: {
+    regio: { view: [-20, -15, 240, 140], cmds: [] },
+    nivell: { view: [-20, -15, 240, 140], cmds: [
+      'R: (x + 2y <= 200) && (3x + 4y <= 480) && (x <= 140) && (x >= 0) && (y >= 0)',
+      'SetColor(R, "#EA5B0C")', 'k = Slider(0, 1200, 10)', 'SetValue(k, 400)', 'z: 5x + 8y = k', 'SetLineStyle(z, 1)', 'SetLineThickness(z, 6)', 'SetColor(z, "black")'] },
+    lab: { view: [-20, -15, 240, 140], cmds: [] },
+  },
+  coopRegion: [
+    'R: (x + 2y <= 200) && (3x + 4y <= 480) && (x <= 140) && (x >= 0) && (y >= 0)',
+    'SetColor(R, "#EA5B0C")',
+    'A = Intersect(x + 2y = 200, 3x + 4y = 480)'],
+  loadScript() {
+    if (this.loading) return this.loading;
+    this.loading = new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://www.geogebra.org/apps/deployggb.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+    return this.loading;
+  },
+  ensure(name) {
+    if (this.apis[name] || this.pending[name]) return;
+    const box = document.querySelector(`[data-ggb="${name}"]`);
+    if (!box || box.offsetWidth === 0) return;
+    this.pending[name] = true;
+    box.innerHTML = '<p class="ggb-msg">Carregant GeoGebra…</p>';
+    const fail = () => {
+      box.innerHTML = '<p class="ggb-msg"><b>No s\'ha pogut carregar GeoGebra</b> (cal connexió a internet, i alguns visors, com la vista prèvia de claude.ai, bloquegen applets externs; publicada a GitHub Pages funciona). Mentrestant, obriu <a href="https://www.geogebra.org/calculator" target="_blank" rel="noopener">geogebra.org/calculator</a> i escriviu-hi les ordres de dalt.</p>';
+      this.pending[name] = false;
+    };
+    const timer = setTimeout(() => { if (!this.apis[name]) fail(); }, 25000);
+    this.loadScript().then(() => {
+      const id = 'ggbapp-' + name;
+      box.innerHTML = `<div id="${id}"></div>`;
+      const P = this.presets[name];
+      const params = {
+        appName: 'graphing', width: box.clientWidth, height: box.clientHeight,
+        showToolBar: false, showAlgebraInput: true, showMenuBar: false, enableShiftDragZoom: true,
+        showResetIcon: true, enableRightClick: true, language: 'ca',
+        appletOnLoad: api => {
+          clearTimeout(timer);
+          this.apis[name] = api;
+          api.evalCommand(`ZoomIn(${P.view.join(',')})`);
+          P.cmds.forEach(c => api.evalCommand(c));
+          const qd = this.queue[name]; if (qd) { delete this.queue[name]; this.run(name, qd.cmds, qd.view); }
+        }
+      };
+      new GGBApplet(params, true).inject(id);
+    }).catch(() => { clearTimeout(timer); this.loading = null; fail(); });
+  },
+  run(name, cmds, view) {
+    const api = this.apis[name];
+    if (!api) { this.queue[name] = { cmds, view }; this.ensure(name); return false; }
+    api.newConstruction();
+    if (view) api.evalCommand(`ZoomIn(${view.join(',')})`);
+    cmds.forEach(c => api.evalCommand(c));
+    return true;
+  }
+};
+document.addEventListener('click', e => {
+  const l = e.target.closest('[data-ggbload]'), r = e.target.closest('[data-ggbreset]');
+  if (l && l.dataset.ggbload === 'regio') GGB.run('regio', GGB.coopRegion, [-20, -15, 240, 140]);
+  if (r) GGB.run(r.dataset.ggbreset, [], [-20, -15, 240, 140]);
+});
+
+/* ==========================================================================
+   6. QÜESTIONARIS AUTOCORRECTIUS
+   ========================================================================== */
+const QUIZ = {
+  diag: [
+    { q: 'Quina és la solució del sistema \\(x+y=10,\\ x-y=4\\)?', o: ['\\((7,3)\\)', '\\((3,7)\\)', '\\((6,4)\\)', '\\((5,5)\\)'], a: 0, w: 'Sumant les equacions: \\(2x=14\\Rightarrow x=7\\), i \\(y=3\\).' },
+    { q: 'On talla la recta \\(2x+5y=20\\) els eixos?', o: ['\\((10,0)\\) i \\((0,4)\\)', '\\((4,0)\\) i \\((0,10)\\)', '\\((2,0)\\) i \\((0,5)\\)', '\\((20,0)\\) i \\((0,20)\\)'], a: 0, w: 'Amb \\(y=0\\): \\(x=10\\). Amb \\(x=0\\): \\(y=4\\).' },
+    { q: 'El punt \\((3,2)\\) pertany a la recta \\(x+3y=9\\)?', o: ['Sí', 'No'], a: 0, w: '\\(3+3\\cdot2=9\\). Sí que hi pertany.' },
+    { q: 'Quines dues rectes són paral·leles?', o: ['\\(2x+3y=6\\) i \\(4x+6y=1\\)', '\\(2x+3y=6\\) i \\(3x+2y=6\\)', '\\(x+y=1\\) i \\(x-y=1\\)', '\\(x=2\\) i \\(y=2\\)'], a: 0, w: 'Tenen coeficients proporcionals (\\(4/2=6/3\\)) i el terme independent no ho és.' },
+    { q: 'Resoleu \\(-2x\\ge 6\\).', o: ['\\(x\\le -3\\)', '\\(x\\ge -3\\)', '\\(x\\le 3\\)', '\\(x\\ge 3\\)'], a: 0, w: 'En dividir per un nombre negatiu, la desigualtat canvia de sentit.' },
+  ],
+  explora: [
+    { q: 'Quin d\'aquests punts compleix \\(3x+4y\\le 480\\)?', o: ['\\((80,60)\\)', '\\((100,60)\\)', '\\((0,130)\\)', '\\((170,0)\\)'], a: 0, w: '\\(3\\cdot80+4\\cdot60=480\\le480\\). Els altres donen 540, 520 i 510.' },
+    { q: 'Les rectes de nivell \\(5x+8y=k\\) per a diferents valors de \\(k\\) són…', o: ['paral·leles entre si', 'totes passen per l\'origen', 'perpendiculars a l\'eix x', 'cada vegada més inclinades'], a: 0, w: 'Tenen el mateix pendent \\(-5/8\\); només canvia l\'ordenada a l\'origen.' },
+    { q: 'Conjectura: «el màxim d\'una funció lineal en una regió fitada s\'assoleix…»', o: ['en algun vèrtex (de vegades en tot un costat)', 'sempre al centre de la regió', 'sempre en el punt més allunyat de l\'origen', 'mai a la vora'], a: 0, w: 'La recta de nivell surt de la regió per un vèrtex, o per un costat si hi és paral·lela.' },
+  ],
+  explica: [
+    { q: 'En una regió fitada, la funció objectiu val 20 en el vèrtex A, 35 en B, 35 en C i 10 en D, i B i C són consecutius. El màxim és…', o: ['35, en tots els punts del segment BC', '35, només en B', '35, només en C', 'no es pot saber'], a: 0, w: 'Si dos vèrtexs consecutius empaten en l\'òptim, tot el costat que els uneix és òptim.' },
+    { q: 'Una regió no fitada s\'estén cap amunt i cap a la dreta, i volem maximitzar \\(z=2x+3y\\). Què passa?', o: ['No hi ha màxim', 'El màxim és al vèrtex més alt', 'El màxim és a l\'origen', 'Hi ha infinits màxims'], a: 0, w: 'Movent-nos cap amunt i cap a la dreta, \\(z\\) creix indefinidament.' },
+    { q: 'En la mateixa regió no fitada volem minimitzar \\(z=2x+3y\\). Què passa?', o: ['Hi ha mínim, en un vèrtex o un costat', 'No hi ha mínim', 'El mínim és sempre l\'origen', 'Cal arrodonir'], a: 0, w: 'Ara la recta de nivell es mou cap a l\'origen i l\'últim punt que toca és un vèrtex o un costat.' },
+    { q: 'L\'òptim d\'un problema d\'autocars és \\((4{,}6;\\ 3{,}2)\\). Què feu?', o: ['Busco punts enters factibles propers i comparo el cost', 'Arrodoneixo a \\((5,3)\\) i ja està', 'Arrodoneixo sempre cap avall', 'El problema no té solució'], a: 0, w: 'L\'arrodoniment pot sortir de la regió o no ser òptim. Cal comprovar.' },
+    { q: 'En l\'òptim de la cooperativa, \\((80,60)\\), quina restricció NO s\'esgota?', o: ['La demanda de samarretes', 'El pressupost', 'El temps de planxa', 'Totes s\'esgoten'], a: 0, w: 'Es fan 80 samarretes de les 140 que es podrien vendre: en sobren 60.' },
+  ],
+  sortida: [
+    { q: 'Una regió factible té vèrtexs \\((0,0),(6,0),(4,3),(0,5)\\). El màxim de \\(z=x+2y\\) és…', o: ['10, a \\((4,3)\\) i \\((0,5)\\) i tot el segment que els uneix', '10, només a \\((0,5)\\)', '6, a \\((6,0)\\)', '11, a \\((4,3)\\)'], a: 0, w: '\\(z(4,3)=4+6=10\\), \\(z(0,5)=10\\), \\(z(6,0)=6\\). Empat en dos vèrtexs consecutius: infinites solucions.' },
+    { q: 'Quin sistema descriu el triangle de vèrtexs \\((0,0),(4,0),(0,4)\\)?', o: ['\\(x\\ge0,\\ y\\ge0,\\ x+y\\le4\\)', '\\(x\\le4,\\ y\\le4\\)', '\\(x+y\\ge4,\\ x\\ge0,\\ y\\ge0\\)', '\\(x+y\\le4\\)'], a: 0, w: 'Calen les tres restriccions. La recta per \\((4,0)\\) i \\((0,4)\\) és \\(x+y=4\\) i l\'origen compleix \\(\\le\\).' },
+    { q: 'Per què l\'òptim d\'una funció lineal no pot estar a l\'interior de la regió?', o: ['Perquè des d\'un punt interior sempre podem moure\'ns en la direcció en què z creix', 'Perquè l\'interior no és factible', 'Perquè les rectes de nivell no hi passen', 'Sí que hi pot estar'], a: 0, w: 'Al voltant d\'un punt interior hi ha punts factibles en totes direccions, també en la que fa créixer z (si z no és constant).' },
+  ],
+};
+function renderQuiz(id) {
+  const host = document.getElementById('quiz-' + id); if (!host) return;
+  QUIZ[id].forEach((it, n) => {
+    const d = document.createElement('div'); d.className = 'q';
+    // barregem opcions de manera determinista (no sempre la primera)
+    const order = it.o.map((_, i) => i); const rot = (n * 2 + 1) % it.o.length;
+    const ord = order.slice(rot).concat(order.slice(0, rot));
+    d.innerHTML = `<p class="enun">${n + 1}. ${it.q}</p><div class="opcions">${ord.map((i, k) => `<button class="opcio" data-i="${i}"><span class="lletra">${'abcd'[k]})</span><span>${it.o[i]}</span></button>`).join('')}</div><div class="feedback" role="status"></div>`;
+    let fails = 0;
+    d.querySelectorAll('.opcio').forEach(b => b.addEventListener('click', () => {
+      const ok = +b.dataset.i === it.a, fb = d.querySelector('.feedback');
+      if (!ok) fails++;
+      d.querySelectorAll('.opcio').forEach(x => x.classList.remove('ok', 'ko'));
+      b.classList.add(ok ? 'ok' : 'ko');
+      fb.className = 'feedback show ' + (ok ? 'ok' : 'ko');
+      fb.innerHTML = ok ? '<b>Correcte.</b> ' + it.w : (fails < 2 ? '<b>Encara no.</b> Torneu-ho a provar.' : '<b>Encara no.</b> ' + it.w);
+      typeset(fb);
+    }));
+    host.appendChild(d);
+  });
+}
+
+/* ==========================================================================
+   7. IMPLICA'T: EL JOC DE LA COOPERATIVA
+   ========================================================================== */
+const Joc = {
+  reg: [], revela: false,
+  limits: [
+    { nom: 'Pressupost', f: (x, y) => 5 * x + 10 * y, max: 1000, u: '€' },
+    { nom: 'Temps de planxa', f: (x, y) => 3 * x + 4 * y, max: 480, u: 'min' },
+    { nom: 'Samarretes (demanda)', f: (x) => x, max: 140, u: 'u.' },
+  ],
+  init() {
+    const bx = document.getElementById('jbarres');
+    bx.innerHTML = this.limits.map((l, i) => `<div class="barra" id="jb${i}"><div class="cap"><span>${l.nom}</span><span></span></div><div class="pista"><div class="ple"></div></div></div>`).join('');
+    const sync = (src, dst) => { document.getElementById(dst).value = document.getElementById(src).value; this.update(); };
+    ['jx', 'jy'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => sync(id, id + 'n'));
+      document.getElementById(id + 'n').addEventListener('input', () => sync(id + 'n', id));
+    });
+    document.getElementById('jreg').addEventListener('click', () => this.registra());
+    document.getElementById('jreset').addEventListener('click', () => { this.reg = []; this.pinta(); });
+    document.getElementById('jrevela').addEventListener('click', e => { this.revela = !this.revela; e.currentTarget.setAttribute('aria-pressed', this.revela); this.pinta(); });
+    this.update(); this.pinta();
+  },
+  val() { return [Math.max(0, Math.round(+document.getElementById('jx').value || 0)), Math.max(0, Math.round(+document.getElementById('jy').value || 0))]; },
+  update() {
+    const [x, y] = this.val();
+    document.getElementById('jxo').textContent = x; document.getElementById('jyo').textContent = y;
+    let ok = true;
+    this.limits.forEach((l, i) => {
+      const v = l.f(x, y), b = document.getElementById('jb' + i), over = v > l.max;
+      ok = ok && !over;
+      b.classList.toggle('over', over);
+      b.querySelector('.ple').style.width = Math.min(100, v / l.max * 100) + '%';
+      b.querySelector('.cap span:last-child').textContent = `${v} / ${l.max} ${l.u}`;
+    });
+    document.getElementById('jbenef').firstChild.nodeValue = (5 * x + 8 * y).toLocaleString('ca-ES') + ' € ';
+    const st = document.getElementById('jestat');
+    st.className = 'estat ' + (ok ? 'ok' : 'ko'); st.textContent = ok ? 'Pla viable' : 'No és viable';
+  },
+  registra() {
+    const [x, y] = this.val();
+    const ok = this.limits.every(l => l.f(x, y) <= l.max);
+    this.reg.push({ x, y, z: 5 * x + 8 * y, ok });
+    this.pinta();
+  },
+  pinta() {
+    const tb = document.querySelector('#jtaula tbody');
+    const best = Math.max(-1, ...this.reg.filter(r => r.ok).map(r => r.z));
+    tb.innerHTML = this.reg.map((r, i) => `<tr class="${r.ok && r.z === best ? 'opt' : ''}"><td>${i + 1}</td><td class="num">${r.x}</td><td class="num">${r.y}</td><td class="num">${r.z} €</td><td>${r.ok ? 'Sí' : 'No'}</td></tr>`).join('') || '<tr><td colspan="5" style="color:var(--ink-soft)">Encara no hi ha cap proposta.</td></tr>';
+    draw(document.getElementById('jplot'), {
+      C: PROB.coop.C, region: this.revela, hideLines: !this.revela, labelTxt: PROB.coop.lbl, view: { x0: -10, x1: 210, y0: -8, y1: 125 },
+      points: this.reg.map(r => ({ x: r.x, y: r.y, fill: r.ok ? '#1F7A4D' : '#B42318', r: 6 })),
+      xlabel: 'samarretes', ylabel: 'dessuadores', title: 'Propostes registrades'
+    });
+  }
+};
+
+/* ==========================================================================
+   8. EXPLORA
+   ========================================================================== */
+const Semi = {
+  shade: false, last: null,
+  init() {
+    ['sa', 'sb', 'sc', 'sop'].forEach(id => document.getElementById(id).addEventListener('input', () => this.draw()));
+    document.getElementById('sombra').addEventListener('click', e => { this.shade = !this.shade; e.currentTarget.setAttribute('aria-pressed', this.shade); this.draw(); });
+    document.getElementById('sorig').addEventListener('click', () => this.test(0, 0));
+    this.draw();
+  },
+  k() {
+    const a = +document.getElementById('sa').value, b = +document.getElementById('sb').value, c = +document.getElementById('sc').value, op = document.getElementById('sop').value;
+    return { a, b, c, op, txt: linTxt(a, b, op, c) };
+  },
+  draw() {
+    const k = this.k();
+    if (Math.abs(k.a) < EPS && Math.abs(k.b) < EPS) { document.getElementById('splot').innerHTML = '<p class="errlab">a i b no poden ser 0 alhora.</p>'; return; }
+    const pts = this.last ? [{ ...this.last, fill: sat([k], this.last.x, this.last.y) ? '#1F7A4D' : '#B42318', r: 7 }] : [];
+    draw(document.getElementById('splot'), { C: [k], region: this.shade, labels: true, labelTxt: [k.txt], view: { x0: -8, x1: 8, y0: -6, y1: 10 }, points: pts, onClick: (x, y) => this.test(x, y), title: 'Semiplà' });
+    if (this.last) this.test(this.last.x, this.last.y, true);
+  },
+  test(x, y, silent) {
+    const k = this.k(); this.last = { x, y };
+    const v = k.a * x + k.b * y, ok = sat([k], x, y), on = Math.abs(v - k.c) < 1e-9;
+    document.getElementById('sinfo').innerHTML = `<h4>Punt provat: (${fmtN(x)}, ${fmtN(y)})</h4><p class="mono">${fmtN(k.a)}·(${fmtN(x)}) + ${fmtN(k.b)}·(${fmtN(y)}) = ${fmtN(v)} ${ok ? (k.op === '<=' ? '≤' : '≥') : (k.op === '<=' ? '>' : '<')} ${fmtN(k.c)}</p><p>${on ? 'El punt és <b>sobre la recta</b>: compleix la inequació, però no ajuda a triar el costat.' : ok ? '<b>Sí</b> que compleix la inequació: el seu costat és la solució.' : '<b>No</b> compleix la inequació: la solució és l\'altre costat.'}</p>`;
+    if (!silent) this.draw();
+  }
+};
+const Regio = {
+  on: [true, false, false, true, true], showV: false,
+  noms: ['Pressupost: \\(x+2y\\le200\\)', 'Temps de planxa: \\(3x+4y\\le480\\)', 'Demanda: \\(x\\le140\\)', '\\(x\\ge0\\)', '\\(y\\ge0\\)'],
+  init() {
+    const h = document.getElementById('rchecks');
+    h.innerHTML = this.noms.map((n, i) => `<label class="opcio" style="cursor:pointer"><input type="checkbox" data-i="${i}" ${this.on[i] ? 'checked' : ''}><span style="width:14px;height:4px;background:${COLORS[i]};display:inline-block;margin-top:.7em;border-radius:2px"></span><span>${n}</span></label>`).join('');
+    h.querySelectorAll('input').forEach(c => c.addEventListener('change', () => { this.on[+c.dataset.i] = c.checked; this.draw(); }));
+    document.getElementById('rvx').addEventListener('click', e => { this.showV = !this.showV; e.currentTarget.setAttribute('aria-pressed', this.showV); this.draw(); });
+    this.draw();
+  },
+  draw() {
+    const C = PROB.coop.C.filter((_, i) => this.on[i]);
+    const cols = COLORS.filter((_, i) => this.on[i]);
+    const lb = PROB.coop.lbl.filter((_, i) => this.on[i]);
+    if (!C.length) { document.getElementById('rplot').innerHTML = '<p class="plot-caption">Activeu alguna restricció.</p>'; return; }
+    draw(document.getElementById('rplot'), { C, colors: cols, labelTxt: lb, showV: this.showV && analyze(C).bounded, view: { x0: -30, x1: 260, y0: -20, y1: 160 }, xlabel: 'samarretes', ylabel: 'dessuadores', title: 'Regió factible de la cooperativa' });
+  }
+};
+const Nivell = {
+  showVals: false,
+  init() {
+    ['kk', 'kp', 'kq'].forEach(id => document.getElementById(id).addEventListener('input', () => this.draw()));
+    document.getElementById('kvals').addEventListener('click', e => { this.showVals = !this.showVals; e.currentTarget.setAttribute('aria-pressed', this.showVals); this.draw(); });
+    this.draw();
+  },
+  draw() {
+    const p = +document.getElementById('kp').value, q = +document.getElementById('kq').value;
+    const kk = document.getElementById('kk');
+    const r = analyze(PROB.coop.C, [p, q], 'max');
+    const mx = Math.max(100, Math.ceil(Math.max(...r.V.map(v => v.z)) * 1.25 / 10) * 10);
+    kk.max = mx; if (+kk.value > mx) kk.value = mx;
+    const k = +kk.value;
+    ['kko', 'kpo', 'kqo'].forEach((id, i) => document.getElementById(id).textContent = [k, p, q][i]);
+    // hi ha algun punt de la regió amb z = k?
+    const zs = r.V.map(v => v.z), lo = Math.min(...zs), hi = Math.max(...zs);
+    const info = document.getElementById('kinfo');
+    info.textContent = k > hi + 1e-9 ? 'Cap pla dona aquest benefici: la recta ja és fora de la regió.' : k >= hi - 1e-9 ? 'La recta només toca la regió a la vora: és el benefici màxim!' : `Hi ha infinits plans amb benefici ${k} €.`;
+    draw(document.getElementById('kplot'), { C: PROB.coop.C, labelTxt: PROB.coop.lbl, obj: [p, q], k, showV: true, opt: this.showVals ? r : null, view: { x0: -20, x1: 240, y0: -15, y1: 150 }, xlabel: 'samarretes', ylabel: 'dessuadores', title: 'Rectes de nivell' });
+    document.getElementById('ktaula').innerHTML = this.showVals ? `<div class="taula-wrap"><table><thead><tr><th>Vèrtex</th><th class="num">z = ${p}x + ${q}y</th></tr></thead><tbody>${sortV(r.V).map(v => `<tr class="${r.optPts.includes(v) ? 'opt' : ''}"><td>${pt(v.x, v.y)}</td><td class="num">${fmtN(v.z)}</td></tr>`).join('')}</tbody></table></div>` : '';
+  }
+};
+const Casos = {
+  list: [
+    { id: 'coop34', t: 'Benefici 3 € i 4 €', d: 'La recta de nivell \\(3x+4y=k\\) és <b>paral·lela</b> a la restricció de temps \\(3x+4y\\le480\\). Quan surt de la regió, no ho fa per un punt sinó per tot un costat: <b>infinites solucions</b> entre \\((80,60)\\) i \\((140,15)\\), totes amb 480 €.' },
+    { id: 'campanyaMax', t: 'Regió oberta', d: 'Regió de la campanya de l\'ajuntament (restriccions «com a mínim»): no és fitada. Si volem el cost <b>màxim</b>, la recta de nivell es pot allunyar indefinidament: <b>no hi ha màxim</b>. En canvi, el mínim sí que existeix.' },
+    { id: 'buida', t: 'Condicions incompatibles', d: 'Cal que \\(x+y\\ge6\\), però \\(2x+y\\le4\\) amb \\(x,y\\ge0\\) obliga que \\(x+y\\le4\\). No hi ha cap punt que compleixi tot: <b>regió buida</b>, el problema és infactible.' },
+  ],
+  init() {
+    const h = document.getElementById('casos');
+    h.innerHTML = this.list.map((c, i) => `<button class="btn buit petit" data-c="${i}" aria-pressed="${i === 0}">${c.t}</button>`).join('');
+    h.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { h.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); this.show(+b.dataset.c); }));
+    this.show(0);
+  },
+  show(i) {
+    const c = this.list[i], P = PROB[c.id], r = analyze(P.C, P.obj, P.sense);
+    const info = document.getElementById('casinfo');
+    info.innerHTML = `<div class="pregunta"><h4>${c.t}</h4><p>Restriccions: ${P.C.map(k => '<span class="mono">' + linTxt(k.a, k.b, k.op, k.c) + '</span>').join(', ')}.<br>Objectiu: ${P.sense === 'max' ? 'maximitzar' : 'minimitzar'} \\(z=${P.obj[0]}x+${P.obj[1]}y\\).</p><details><summary>Què passa?</summary><p>${c.d}</p></details></div>`;
+    typeset(info);
+    const cfg = { C: P.C, labelTxt: P.lbl, showV: r.V.length > 0, opt: r.status === 'segment' ? r : null, title: c.t };
+    if (r.status === 'segment') { cfg.obj = P.obj; cfg.k = r.best; }
+    if (c.id === 'buida') { cfg.halfplanes = true; cfg.view = { x0: -1, x1: 8, y0: -1, y1: 8 }; }
+    draw(document.getElementById('casplot'), cfg);
+  }
+};
+
+/* ==========================================================================
+   9. EXPLICA: TIPUS DE SOLUCIONS
+   ========================================================================== */
+function renderTipus() {
+  const T = [
+    { id: 'coop', t: 'Solució única', d: 'La recta de nivell surt de la regió per un sol vèrtex. Cas habitual.' },
+    { id: 'coop34', t: 'Infinites solucions', d: 'La funció objectiu és paral·lela a un costat i l\'òptim s\'assoleix a dos vèrtexs consecutius: tot el segment és òptim.' },
+    { id: 'campanyaMax', t: 'No fitat: no hi ha òptim', d: 'La regió no és fitada i la funció creix indefinidament en la direcció en què s\'obre. (El mínim, en canvi, sí que existeix.)' },
+    { id: 'buida', t: 'Infactible', d: 'Les restriccions són incompatibles: la regió és buida i no hi ha cap decisió possible.' },
+  ];
+  const h = document.getElementById('tipus');
+  h.innerHTML = T.map((x, i) => `<div class="card" style="margin:0"><h4 style="margin-top:0">${x.t}</h4><div class="plot" id="tip${i}"></div><p class="plot-caption">${x.d}</p></div>`).join('');
+  T.forEach((x, i) => {
+    const P = PROB[x.id], r = analyze(P.C, P.obj, P.sense);
+    const cfg = { C: P.C, labelTxt: x.id === 'buida' ? P.lbl : P.lbl.map(() => ''), showV: r.V.length > 0, title: x.t, opt: r };
+    if (r.best != null && r.status !== 'nofitat') { cfg.obj = P.obj; cfg.k = r.best; }
+    if (x.id === 'buida') { cfg.halfplanes = true; cfg.view = { x0: -1, x1: 8, y0: -1, y1: 8 }; }
+    draw(document.getElementById('tip' + i), cfg);
+  });
+}
+
+/* ==========================================================================
+   10. APLICA: BANC D'EXERCICIS
+   ========================================================================== */
+const BANC = [
+  { b: 'A', t: 'Semiplà i punt de prova', e: 'Representeu \\(2x+y\\le 6\\). (a) On talla la recta els eixos? (b) L\'origen pertany a la solució?',
+    in: [{ l: 'tall amb l\'eix x: x =', a: 3 }, { l: 'tall amb l\'eix y: y =', a: 6 }, { l: 'L\'origen hi pertany? (1 = sí, 0 = no)', a: 1 }],
+    s: 'La recta passa per \\((3,0)\\) i \\((0,6)\\). Amb \\((0,0)\\): \\(0\\le6\\), cert. La solució és el semiplà que conté l\'origen, recta inclosa.' },
+  { b: 'A', t: 'Quin semiplà?', e: 'La recta \\(x-2y=4\\) divideix el pla. Quina inequació descriu el semiplà que <b>no</b> conté l\'origen?',
+    mc: ['\\(x-2y\\ge4\\)', '\\(x-2y\\le4\\)', '\\(x+2y\\ge4\\)'], a: 0,
+    s: 'L\'origen dona \\(0-0=0\\le4\\), així que l\'origen és a \\(x-2y\\le4\\). L\'altre costat és \\(x-2y\\ge4\\).' },
+  { b: 'A', t: 'Vèrtexs d\'una regió', e: 'Trobeu els vèrtexs de la regió \\(x\\ge0,\\ y\\ge0,\\ x+y\\le5,\\ y\\le x+1\\). Escriviu el vèrtex que no és sobre cap eix.',
+    in: [{ l: 'x =', a: 2 }, { l: 'y =', a: 3 }], plot: 'b3',
+    s: 'Vèrtexs: \\((0,0)\\), \\((5,0)\\), \\((0,1)\\) i el tall de \\(x+y=5\\) amb \\(y=x+1\\): \\(x+x+1=5\\Rightarrow x=2,\\ y=3\\).' },
+  { b: 'A', t: 'De la figura a les inequacions', e: 'Una regió és el pentàgon de vèrtexs \\((0,0),(6,0),(6,2),(2,6)\\) i \\((0,6)\\). Quina restricció correspon al costat que uneix \\((6,2)\\) i \\((2,6)\\)?',
+    mc: ['\\(x+y\\le8\\)', '\\(x+y\\ge8\\)', '\\(x-y\\le4\\)'], a: 0,
+    s: 'La recta per \\((6,2)\\) i \\((2,6)\\) té pendent \\(-1\\): \\(x+y=8\\). L\'origen és dins la regió i \\(0\\le8\\), per tant \\(x+y\\le8\\). La regió és un pentàgon: \\(x\\ge0,\\ y\\ge0,\\ x\\le6,\\ y\\le6,\\ x+y\\le8\\).' },
+  { b: 'B', t: 'Màxim en una regió fitada', e: 'En la regió de l\'exercici A3, trobeu el màxim de \\(z=3x+2y\\).',
+    in: [{ l: 'x =', a: 5 }, { l: 'y =', a: 0 }, { l: 'z màxim =', a: 15 }], plot: 'b3',
+    s: '\\(z(0,0)=0,\\ z(5,0)=15,\\ z(2,3)=12,\\ z(0,1)=2\\). Màxim: 15 a \\((5,0)\\).' },
+  { b: 'B', t: 'Mínim amb sorpresa', e: 'En la mateixa regió, trobeu el mínim de \\(z=x-y\\). Quantes solucions hi ha?',
+    in: [{ l: 'z mínim =', a: -1 }], mc: ['Una sola', 'Infinites', 'Cap'], a: 1,
+    s: '\\(z(0,0)=0,\\ z(5,0)=5,\\ z(2,3)=-1,\\ z(0,1)=-1\\). Empat a \\((2,3)\\) i \\((0,1)\\), que són consecutius: tot el segment de \\(y=x+1\\) entre ells és òptim. Té sentit: sobre aquesta recta \\(x-y=-1\\) sempre.' },
+  { b: 'B', t: 'Regió no fitada', e: 'Regió: \\(x+y\\ge3,\\ y\\ge1,\\ x\\ge0\\). Trobeu el mínim de \\(z=2x+y\\). Existeix el màxim?',
+    in: [{ l: 'z mínim =', a: 3 }], mc: ['Sí, a (2, 1)', 'No existeix', 'Sí, a (0, 3)'], a: 1, plot: 'b7',
+    s: 'Vèrtexs \\((0,3)\\) i \\((2,1)\\): \\(z=3\\) i \\(z=5\\). La regió s\'obre cap a la dreta i cap amunt, i en aquesta direcció \\(z=2x+y\\) creix sense límit: el màxim no existeix. El mínim sí: 3, a \\((0,3)\\).' },
+  { b: 'B', t: 'Paral·lelisme', e: 'En la regió A3, per a quin valor de \\(k\\) la funció \\(z=kx+y\\) té el màxim en tot el segment entre \\((5,0)\\) i \\((2,3)\\)?',
+    in: [{ l: 'k =', a: 1 }],
+    s: 'Cal que \\(z\\) sigui paral·lela a \\(x+y=5\\): \\(k=1\\). Comprovació: \\(z(5,0)=z(2,3)=5\\), \\(z(0,1)=1\\), \\(z(0,0)=0\\).' },
+  { b: 'C', t: 'Feines d\'estiu', e: 'La Laia treballa com a monitora de lleure (10 €/h) i fa classes particulars (15 €/h). Pot treballar com a màxim 20 h setmanals, no pot fer més de 8 h de classes i el casal li exigeix un mínim de 6 h de monitora. Quantes hores ha de fer de cada per maximitzar els ingressos?',
+    in: [{ l: 'hores de monitora =', a: 12 }, { l: 'hores de classes =', a: 8 }, { l: 'ingressos (€) =', a: 240 }], plot: 'b8',
+    s: '\\(x\\) = h de monitora, \\(y\\) = h de classes. Max \\(z=10x+15y\\) amb \\(x+y\\le20,\\ y\\le8,\\ x\\ge6,\\ y\\ge0\\). Vèrtexs: \\((6,0)\\) 60 €, \\((20,0)\\) 200 €, \\((12,8)\\) 240 €, \\((6,8)\\) 180 €. Òptim: 12 h de monitora i 8 h de classes, 240 €.' },
+  { b: 'C', t: 'Recursos sobrants', e: 'Al problema de la Laia, en l\'òptim, quines restriccions s\'esgoten?',
+    mc: ['Les 20 h totals i les 8 h de classes', 'Només les 20 h totals', 'El mínim de 6 h de monitora'], a: 0,
+    s: 'A \\((12,8)\\): \\(12+8=20\\) (esgotada) i \\(y=8\\) (esgotada). Fa 12 h de monitora, 6 més que el mínim exigit.' },
+  { b: 'C', t: 'Inversa: del resultat a la dada', e: 'A la cooperativa, quin hauria de ser el benefici mínim d\'una dessuadora (en €) perquè sortís a compte fer-ne 100 i cap samarreta (vèrtex \\((0,100)\\))? Mantenim 5 € per samarreta.',
+    in: [{ l: 'benefici dessuadora ≥', a: 10 }],
+    s: 'L\'òptim passa de \\((80,60)\\) a \\((0,100)\\) quan la recta de nivell és com a mínim tan horitzontal com el pressupost \\(x+2y=200\\): \\(5/q\\le1/2\\Rightarrow q\\ge10\\). Amb \\(q=10\\) hi ha empat (tot el costat); amb \\(q>10\\), solució única a \\((0,100)\\).' },
+  { b: 'C', t: 'Solucions enteres', e: 'El vèrtex òptim d\'un problema de minimització de cost és \\((8,\\ 8/3)\\), on \\(x,y\\) són autocars. Per què no podem respondre «8 autocars grans i 2,67 petits»? Què cal fer?',
+    mc: ['Buscar els punts enters factibles propers i comparar-ne el cost', 'Arrodonir a (8, 3) sense comprovar res', 'Arrodonir a (8, 2)'], a: 0,
+    s: 'Els autocars són enters. \\((8,2)\\) no compleix les places; \\((8,3)\\) sí, però cal comparar-lo amb altres punts enters, perquè potser n\'hi ha un de més barat. Ho veureu al problema PAU 2.' },
+];
+function renderBanc() {
+  const h = document.getElementById('banc');
+  h.innerHTML = BANC.map((x, n) => {
+    const id = 'ex' + n, lev = { A: 't-a', B: 't-b', C: 't-c' }[x.b];
+    const ins = (x.in || []).map((f, k) => `<label>${f.l} <input type="number" step="any" data-a="${f.a}" aria-label="${f.l}"></label>`).join('');
+    const mc = x.mc ? `<div class="opcions" style="margin-top:.4rem">${x.mc.map((o, k) => `<button class="opcio" data-k="${k}"><span class="lletra">${'abc'[k]})</span><span>${o}</span></button>`).join('')}</div>` : '';
+    return `<div class="q" data-bloc="${x.b}" id="${id}"><p class="enun">${x.b}${BANC.filter((y, i) => y.b === x.b && i <= n).length}. ${x.t} <span class="tag ${lev}">Bloc ${x.b}</span></p><p>${x.e}</p>
+      ${x.plot ? `<div class="plot" data-plot="${x.plot}" style="max-width:420px"></div>` : ''}
+      ${ins ? `<div class="resp">${ins}<button class="btn petit" data-chk>Comprova</button></div>` : ''}${mc}
+      <div class="feedback" role="status"></div>
+      <details><summary>Solució</summary><div class="sol">${x.s}</div></details></div>`;
+  }).join('');
+  h.querySelectorAll('.q').forEach((d, n) => {
+    const x = BANC[n], fb = d.querySelector('.feedback');
+    const say = (ok, msg) => { fb.className = 'feedback show ' + (ok ? 'ok' : 'ko'); fb.innerHTML = msg; };
+    const b = d.querySelector('[data-chk]');
+    if (b) b.addEventListener('click', () => {
+      let all = true;
+      d.querySelectorAll('input[data-a]').forEach(i => {
+        const v = parseFloat(String(i.value).replace(',', '.')), ok = isFinite(v) && Math.abs(v - +i.dataset.a) < 0.01;
+        i.classList.toggle('ok', ok); i.classList.toggle('ko', !ok); all = all && ok;
+      });
+      say(all, all ? '<b>Correcte.</b> Mireu la solució per comparar el procediment.' : '<b>Hi ha algun valor que no quadra.</b> Reviseu els camps en vermell.');
+    });
+    d.querySelectorAll('.opcio').forEach(o => o.addEventListener('click', () => {
+      const ok = +o.dataset.k === x.a;
+      d.querySelectorAll('.opcio').forEach(z => z.classList.remove('ok', 'ko'));
+      o.classList.add(ok ? 'ok' : 'ko');
+      say(ok, ok ? '<b>Correcte.</b>' : '<b>Encara no.</b> Torneu-ho a pensar o obriu la solució.');
+    }));
+  });
+  document.querySelectorAll('[data-filtre]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-filtre]').forEach(z => { z.setAttribute('aria-pressed', z === b); z.classList.toggle('buit', z !== b); });
+    h.querySelectorAll('.q').forEach(q => q.style.display = (b.dataset.filtre === 'tots' || q.dataset.bloc === b.dataset.filtre) ? '' : 'none');
+    renderStaticPlots(h);
+  }));
+}
+
+/* ==========================================================================
+   11. PAU I PROVA (HTML de contingut)
+   ========================================================================== */
+const PAU_HTML = `
+<div class="pau-prob" id="pau1">
+  <h3>Exercici 1 · El forn del barri <span class="punts">[2,5 punts]</span></h3>
+  <p>Un forn elabora cada dia fornades de pa de pagès i de coques de recapte. Cada fornada de pa necessita 3 kg de farina i 1 hora de forn, i cada fornada de coques, 2 kg de farina i 2 hores de forn. Cada dia es disposa de 36 kg de farina i, entre els dos forns, de 20 hores de cocció. A més, un restaurant ha encarregat com a mínim 2 fornades diàries de coques. El benefici és de 40 € per fornada de pa i de 30 € per fornada de coques.</p>
+  <p><b>1.1.</b> Plantegeu el problema, representeu la regió factible i trobeu quantes fornades de cada tipus cal fer per maximitzar el benefici. Quin és aquest benefici? <span class="punts">[1,5 p]</span></p>
+  <p><b>1.2.</b> Per la festa major, el benefici de cada fornada de coques puja a 80 €. Quina o quines són ara les solucions òptimes? Si les fornades han de ser senceres, quines opcions té el forn? <span class="punts">[1 p]</span></p>
+  <details><summary>Pista</summary><p>A l'apartat 1.2, compareu la funció objectiu amb alguna de les restriccions. Què observeu?</p></details>
+  <details><summary>Solució i criteris de correcció</summary><div class="sol">
+    <p>\\(x\\) = fornades de pa, \\(y\\) = fornades de coques. Max \\(z=40x+30y\\) amb</p>
+    \\[3x+2y\\le36,\\quad x+2y\\le20,\\quad y\\ge2,\\quad x\\ge0.\\]
+    <div class="plot" data-plot="pau1" data-show="opt" style="max-width:480px"></div>
+    <p>Vèrtexs: \\((0,2)\\), \\((0,10)\\), \\((32/3,\\,2)\\) [de \\(3x+2y=36,\\ y=2\\)] i \\((8,6)\\) [de \\(3x+2y=36,\\ x+2y=20\\): restant, \\(2x=16\\)].</p>
+    <div class="taula-wrap"><table><thead><tr><th>Vèrtex</th><th class="num">z</th></tr></thead><tbody>
+      <tr><td>(0, 2)</td><td class="num">60</td></tr><tr><td>(0, 10)</td><td class="num">300</td></tr>
+      <tr class="opt"><td>(8, 6)</td><td class="num">500</td></tr><tr><td>(32/3, 2)</td><td class="num">≈ 486,67</td></tr></tbody></table></div>
+    <p><b>1.1:</b> 8 fornades de pa i 6 de coques; benefici màxim 500 €.</p>
+    <p><b>1.2:</b> \\(z=40x+80y=40(x+2y)\\) és paral·lela a la restricció del forn. A \\((0,10)\\) i \\((8,6)\\) val 800 €: hi ha <b>infinites solucions</b>, tot el segment de \\(x+2y=20\\) entre aquests punts. Amb fornades senceres: \\((0,10),(2,9),(4,8),(6,7),(8,6)\\), totes amb 800 €.</p>
+    <p class="criteris"><b>Criteris:</b></p><ul class="criteris">
+      <li>1.1: definició de variables i funció objectiu, 0,25 p; restriccions, 0,5 p; regió factible, 0,25 p; vèrtexs, 0,25 p; òptim i resposta en context, 0,25 p.</li>
+      <li>1.2: identificar el paral·lelisme o l'empat entre vèrtexs, 0,5 p; descriure el conjunt de solucions, 0,25 p; solucions enteres, 0,25 p.</li></ul>
+  </div></details>
+</div>
+
+<div class="pau-prob" id="pau2">
+  <h3>Exercici 2 · La sortida de final de curs <span class="punts">[2,5 punts]</span></h3>
+  <p>Un institut ha de portar 480 alumnes de colònies. Una empresa de transport disposa d'autocars de 50 places i de 30 places, però només té 8 autocars grans i 12 conductors disponibles aquell dia. Llogar un autocar gran costa 700 € i un de petit, 400 €.</p>
+  <p><b>2.1.</b> Quants autocars de cada tipus cal llogar perquè el cost sigui mínim? Quin és aquest cost? <span class="punts">[1,25 p]</span></p>
+  <p><b>2.2.</b> L'empresa fa una oferta i el preu de l'autocar gran baixa a 600 €. Comproveu que l'òptim del model passa a ser un punt no enter i trobeu quina decisió ha de prendre l'institut. Justifiqueu-ho. <span class="punts">[1,25 p]</span></p>
+  <details><summary>Solució i criteris de correcció</summary><div class="sol">
+    <p>\\(x\\) = autocars grans, \\(y\\) = autocars petits (enters). Min \\(C=700x+400y\\) amb \\(50x+30y\\ge480\\ (\\Leftrightarrow 5x+3y\\ge48),\\ x+y\\le12,\\ x\\le8,\\ x,y\\ge0\\).</p>
+    <div class="plot" data-plot="pau2" data-show="opt" style="max-width:480px"></div>
+    <p>Vèrtexs: \\((6,6)\\) [de \\(5x+3y=48\\) i \\(x+y=12\\)], \\((8,4)\\) i \\((8,\\,8/3)\\).</p>
+    <p><b>2.1:</b> \\(C(6,6)=6600\\), \\(C(8,4)=7200\\), \\(C(8,8/3)\\approx6666,67\\). Mínim: <b>6 grans i 6 petits, 6.600 €</b>.</p>
+    <p><b>2.2:</b> Ara \\(C=600x+400y\\): \\(C(6,6)=6000\\), \\(C(8,4)=6400\\), \\(C(8,8/3)\\approx5866,67\\). L'òptim del model és \\((8,\\ 8/3)\\), que no és enter. Punts enters factibles propers: \\((8,3)\\to6000\\) €, \\((7,5)\\to6200\\) €, \\((6,6)\\to6000\\) €. <b>Hi ha dues decisions òptimes enteres: 8 grans i 3 petits, o 6 i 6, amb 6.000 €.</b> \\((8,2)\\) no serveix: només té 460 places. Criteri afegit raonable: amb (8, 3) es necessiten 11 conductors en lloc de 12.</p>
+    <p class="criteris"><b>Criteris:</b></p><ul class="criteris">
+      <li>2.1: plantejament, 0,5 p; vèrtexs, 0,5 p; resposta, 0,25 p.</li>
+      <li>2.2: nou òptim no enter, 0,5 p; anàlisi dels punts enters i comprovació de restriccions, 0,5 p; decisió justificada, 0,25 p.</li></ul>
+  </div></details>
+</div>
+
+<div class="pau-prob" id="pau3">
+  <h3>Exercici 3 · Una inversió responsable <span class="punts">[2,5 punts]</span></h3>
+  <p>La Marta té com a màxim 30.000 € per invertir en un fons verd A, que dona un rendiment anual del 5 %, i en un dipòsit B, que en dona el 3 %. L'assessora li recomana: invertir almenys 6.000 € en A; no posar més de 20.000 € en B; i, per limitar el risc, que la inversió en A no superi el doble de la de B.</p>
+  <p><b>3.1.</b> Plantegeu el problema i representeu la regió factible (useu milers d'euros). <span class="punts">[1,25 p]</span></p>
+  <p><b>3.2.</b> Quant ha d'invertir en cada producte per obtenir el màxim rendiment? Quin és aquest rendiment? Inverteix tots els diners? <span class="punts">[1,25 p]</span></p>
+  <details><summary>Solució i criteris de correcció</summary><div class="sol">
+    <p>\\(x\\) = milers d'€ en A, \\(y\\) = milers d'€ en B. Rendiment en €: \\(R=0{,}05\\cdot1000x+0{,}03\\cdot1000y=50x+30y\\). Restriccions: \\(x+y\\le30,\\ x\\ge6,\\ y\\le20,\\ x\\le2y\\ (\\Leftrightarrow x-2y\\le0),\\ y\\ge0\\).</p>
+    <div class="plot" data-plot="pau3" data-show="opt" style="max-width:480px"></div>
+    <p>Vèrtexs: \\((6,3)\\), \\((6,20)\\), \\((10,20)\\), \\((20,10)\\). [\\((20,10)\\): \\(x+y=30,\\ x=2y\\Rightarrow3y=30\\).]</p>
+    <p>\\(R(6,3)=390\\), \\(R(6,20)=900\\), \\(R(10,20)=1100\\), \\(R(20,10)=1300\\).</p>
+    <p><b>3.2:</b> 20.000 € al fons A i 10.000 € al dipòsit B; rendiment màxim 1.300 € l'any. Sí, inverteix els 30.000 €, i la condició de risc s'esgota (A és exactament el doble de B).</p>
+    <p class="criteris"><b>Criteris:</b></p><ul class="criteris">
+      <li>3.1: variables i funció objectiu (incloent la conversió de percentatges), 0,5 p; restriccions, en particular \\(x\\le2y\\), 0,5 p; regió, 0,25 p.</li>
+      <li>3.2: vèrtexs, 0,5 p; òptim i valor, 0,5 p; interpretació, 0,25 p.</li></ul>
+  </div></details>
+</div>
+
+<div class="pau-prob" id="pau4">
+  <h3>Exercici 4 · Llegir una regió <span class="punts">[2,5 punts]</span></h3>
+  <p>La regió ombrejada de la figura és la regió factible d'un problema de programació lineal.</p>
+  <div class="plot" id="pau4fig" style="max-width:440px"></div>
+  <p><b>4.1.</b> Determineu el sistema d'inequacions que la defineix. <span class="punts">[1 p]</span></p>
+  <p><b>4.2.</b> Trobeu el màxim i el mínim de \\(f(x,y)=2x+3y\\) en aquesta regió i on s'assoleixen. <span class="punts">[1 p]</span></p>
+  <p><b>4.3.</b> Trobeu el màxim de \\(g(x,y)=x+y\\). Què el fa diferent de l'apartat anterior? <span class="punts">[0,5 p]</span></p>
+  <details><summary>Solució i criteris de correcció</summary><div class="sol">
+    <p><b>4.1:</b> Vèrtexs \\((2,0),(6,0),(6,2),(3,5),(0,5),(0,2)\\). Rectes: per \\((0,2)\\) i \\((2,0)\\): \\(x+y=2\\); per \\((6,2)\\) i \\((3,5)\\): \\(x+y=8\\); i \\(x=6\\), \\(y=5\\), els eixos. Amb un punt interior, p. ex. \\((3,2)\\):</p>
+    \\[x+y\\ge2,\\quad x+y\\le8,\\quad x\\le6,\\quad y\\le5,\\quad x\\ge0,\\quad y\\ge0.\\]
+    <p><b>4.2:</b> \\(f\\): 4, 12, 18, 21, 15, 6. Màxim 21 a \\((3,5)\\); mínim 4 a \\((2,0)\\).</p>
+    <p><b>4.3:</b> \\(g(6,2)=g(3,5)=8\\) i és més petita a la resta: màxim 8 en <b>tot el segment</b> entre \\((6,2)\\) i \\((3,5)\\), perquè \\(g\\) és paral·lela al costat \\(x+y=8\\).</p>
+    <p class="criteris"><b>Criteris:</b> 4.1: equacions de les rectes, 0,5 p; sentit de les desigualtats justificat, 0,5 p. 4.2: valors als vèrtexs, 0,5 p; màxim i mínim, 0,5 p. 4.3: valor i descripció del conjunt solució, 0,5 p.</p>
+  </div></details>
+</div>
+
+<div class="pau-prob" id="pau5">
+  <h3>Exercici 5 · La protectora d'animals <span class="punts">[2,5 punts]</span></h3>
+  <p>Una protectora d'animals barreja dos pinsos. Cada sac del pinso A aporta 2 unitats de proteïna i 1 de fibra; cada sac de B, 1 unitat de proteïna i 3 de fibra. Cada setmana necessita com a mínim 12 unitats de proteïna i 15 de fibra i, per volum de menjar, almenys 9 sacs. Un sac d'A costa 20 € i un de B, 15 €.</p>
+  <p><b>5.1.</b> Quants sacs de cada pinso ha de comprar per gastar el mínim? Quin és el cost? <span class="punts">[1,5 p]</span></p>
+  <p><b>5.2.</b> Té sentit buscar el cost màxim? Raoneu-ho a partir de la regió. Si el sac de B passa a costar 25 €, canvia la compra òptima? <span class="punts">[1 p]</span></p>
+  <details><summary>Solució i criteris de correcció</summary><div class="sol">
+    <p>Min \\(C=20x+15y\\) amb \\(2x+y\\ge12,\\ x+3y\\ge15,\\ x+y\\ge9,\\ x,y\\ge0\\).</p>
+    <div class="plot" data-plot="pau5" data-show="opt" style="max-width:480px"></div>
+    <p>Vèrtexs: \\((0,12)\\), \\((3,6)\\) [\\(2x+y=12,\\ x+y=9\\)], \\((6,3)\\) [\\(x+3y=15,\\ x+y=9\\)], \\((15,0)\\).</p>
+    <p><b>5.1:</b> \\(C\\): 180, 150, 165, 300. Mínim: <b>3 sacs d'A i 6 de B, 150 €</b>.</p>
+    <p><b>5.2:</b> La regió no és fitada (s'obre cap a dalt i cap a la dreta): sempre es pot comprar més i gastar més, de manera que <b>no hi ha cost màxim</b>, i tampoc no tindria sentit. Amb B a 25 €: \\(C=20x+25y\\) val 300, 210, 195, 300; ara l'òptim és <b>6 sacs d'A i 3 de B, 195 €</b>.</p>
+    <p class="criteris"><b>Criteris:</b> 5.1: plantejament, 0,5 p; regió i vèrtexs, 0,5 p; solució, 0,5 p. 5.2: raonament de no fitació, 0,5 p; nou òptim, 0,5 p.</p>
+  </div></details>
+</div>
+
+<div class="pau-prob" id="pau6">
+  <h3>Exercici 6 · Transversal (com l'exercici 4 de la PAU) <span class="punts">[2,5 punts]</span></h3>
+  <p>Una cooperativa agrària fa lots de melmelada i lots de conserva. La matriu \\(M\\) indica el consum per lot (files: kg de fruita, kg de sucre, hores de feina; columnes: melmelada, conserva). Cada setmana disposa de 80 kg de fruita, 24 kg de sucre i 36 hores.</p>
+  \\[M=\\begin{pmatrix}4&2\\\\1&1\\\\1&2\\end{pmatrix}\\]
+  <p>Trieu <b>una</b> de les dues opcions.</p>
+  <div class="grid2">
+    <div class="card" style="margin:0"><h4 style="margin-top:0">Opció A</h4>
+      <p><b>4.1.</b> El pla d'una setmana és fer 10 lots de melmelada i 15 de conserva. Calculeu \\(M\\cdot P\\), amb \\(P=\\begin{pmatrix}10\\\\15\\end{pmatrix}\\), interpreteu-ne el resultat i digueu si el pla és viable. <span class="punts">[1,25 p]</span></p>
+      <p><b>4.2.</b> Si el benefici és de 30 € per lot de melmelada i de 25 € per lot de conserva, quin pla maximitza el benefici? <span class="punts">[1,25 p]</span></p></div>
+    <div class="card" style="margin:0"><h4 style="margin-top:0">Opció B</h4>
+      <p><b>4.1.</b> Una setmana van vendre 10 lots de melmelada i 6 de conserva, i van guanyar 450 €; una altra, 4 i 12, i van guanyar 420 €. Calculeu el benefici de cada tipus de lot. <span class="punts">[1,25 p]</span></p>
+      <p><b>4.2.</b> Fins ara feien 12 lots de cada tipus. Amb els beneficis de l'apartat anterior, és el millor pla possible? Justifiqueu-ho. <span class="punts">[1,25 p]</span></p></div>
+  </div>
+  <details><summary>Solució i criteris de correcció</summary><div class="sol">
+    <p><b>A 4.1:</b> \\(M\\cdot P=\\begin{pmatrix}4\\cdot10+2\\cdot15\\\\10+15\\\\10+2\\cdot15\\end{pmatrix}=\\begin{pmatrix}70\\\\25\\\\40\\end{pmatrix}\\): calen 70 kg de fruita (≤ 80, d'acord), 25 kg de sucre (> 24) i 40 hores (> 36). <b>No és viable</b>: falten sucre i hores.</p>
+    <p><b>A 4.2:</b> Les restriccions són \\(M\\begin{pmatrix}x\\\\y\\end{pmatrix}\\le\\begin{pmatrix}80\\\\24\\\\36\\end{pmatrix}\\), és a dir \\(4x+2y\\le80,\\ x+y\\le24,\\ x+2y\\le36,\\ x,y\\ge0\\). Max \\(z=30x+25y\\).</p>
+    <div class="plot" data-plot="pau6" data-show="opt" style="max-width:480px"></div>
+    <p>Vèrtexs: \\((0,0)\\) 0; \\((20,0)\\) 600; \\((16,8)\\) 680; \\((12,12)\\) 660; \\((0,18)\\) 450. Òptim: <b>16 lots de melmelada i 8 de conserva, 680 €</b>.</p>
+    <p><b>B 4.1:</b> \\(10a+6b=450,\\ 4a+12b=420\\). Fent \\(2E_1-E_2\\): \\(16a=480\\Rightarrow a=30\\), \\(b=25\\). <b>30 € per lot de melmelada, 25 € per lot de conserva.</b></p>
+    <p><b>B 4.2:</b> El pla \\((12,12)\\) és factible (és un vèrtex) i dona 660 €. Però el vèrtex \\((16,8)\\) dona 680 €. Com que l'òptim d'una regió fitada és en un vèrtex i hem comparat tots els vèrtexs, <b>no és el millor pla</b>: han de fer 16 i 8.</p>
+    <p class="criteris"><b>Criteris:</b> A 4.1: producte, 0,75 p; interpretació i viabilitat, 0,5 p. A 4.2 i B 4.2: restriccions, 0,5 p; vèrtexs i comparació, 0,5 p; conclusió, 0,25 p. B 4.1: plantejament, 0,5 p; resolució, 0,75 p.</p>
+  </div></details>
+</div>`;
+
+const PROVA_HTML = `
+<div class="pau-prob">
+  <h3>Exercici 1 · El casal d'estiu <span class="punts">[2,5 punts]</span></h3>
+  <p>Una associació juvenil organitza un casal d'estiu amb grups de matí i grups de tarda. Cada grup de matí necessita 2 monitors i cada grup de tarda, 1 monitor; l'associació en té 16. Disposa de 10 aules (una per grup) i s'ha compromès a obrir com a mínim 2 grups de tarda. Cada grup de matí ingressa 400 € i cada grup de tarda, 250 €.</p>
+  <p><b>1.1.</b> Plantegeu el problema i trobeu quants grups de cada tipus cal obrir per maximitzar els ingressos. <span class="punts">[1,5 p]</span></p>
+  <p><b>1.2.</b> Si els grups de matí passessin a ingressar 500 €, quantes solucions òptimes enteres hi hauria? Quines? <span class="punts">[1 p]</span></p>
+  <details><summary>Solució</summary><div class="sol">
+    <p>Max \\(I=400x+250y\\) amb \\(2x+y\\le16,\\ x+y\\le10,\\ y\\ge2,\\ x\\ge0\\).</p>
+    <div class="plot" data-plot="e1" data-show="opt" style="max-width:460px"></div>
+    <p>Vèrtexs: \\((0,2)\\) 500; \\((0,10)\\) 2500; \\((6,4)\\) 3400; \\((7,2)\\) 3300. <b>6 grups de matí i 4 de tarda, 3.400 €.</b></p>
+    <p><b>1.2:</b> \\(I=500x+250y=250(2x+y)\\), paral·lela als monitors. \\(I(6,4)=I(7,2)=4000\\). Solucions òptimes: tot el segment; enteres, només <b>\\((6,4)\\) i \\((7,2)\\)</b>.</p>
+  </div></details>
+</div>
+<div class="pau-prob">
+  <h3>Exercici 2 · El banc d'aliments <span class="punts">[2,5 punts]</span></h3>
+  <p>Un banc d'aliments prepara lots de tipus A i B. Cada lot A porta 2 kg de llegums i 1 kg d'arròs; cada lot B, 1 kg de llegums i 2 kg d'arròs. Cal repartir com a mínim 40 kg de llegums i 35 kg d'arròs, i la furgoneta només admet 30 lots. Un lot A costa 12 € i un de B, 10 €.</p>
+  <p><b>2.1.</b> Representeu la regió factible i trobeu-ne els vèrtexs. <span class="punts">[1 p]</span></p>
+  <p><b>2.2.</b> Quants lots de cada tipus minimitzen el cost? I quina combinació seria la més cara? <span class="punts">[1 p]</span></p>
+  <p><b>2.3.</b> Si la furgoneta no tingués límit, la combinació més cara existiria? Raoneu-ho. <span class="punts">[0,5 p]</span></p>
+  <details><summary>Solució</summary><div class="sol">
+    <p>\\(2x+y\\ge40,\\ x+2y\\ge35,\\ x+y\\le30,\\ x,y\\ge0\\). Min/max \\(C=12x+10y\\).</p>
+    <div class="plot" data-plot="e2" data-show="opt" style="max-width:460px"></div>
+    <p>Vèrtexs: \\((15,10)\\) [\\(2x+y=40,\\ x+2y=35\\)], \\((10,20)\\) [\\(2x+y=40,\\ x+y=30\\)], \\((25,5)\\) [\\(x+2y=35,\\ x+y=30\\)].</p>
+    <p>\\(C\\): 280, 320, 350. <b>Mínim: 15 lots A i 10 lots B, 280 €.</b> Màxim: 25 A i 5 B, 350 €.</p>
+    <p><b>2.3:</b> Sense \\(x+y\\le30\\), la regió no és fitada i el cost pot créixer indefinidament: no hi hauria màxim.</p>
+  </div></details>
+</div>`;
+
+/* ==========================================================================
+   12. LABORATORI
+   ========================================================================== */
+let LAB = null;
+function labInit() {
+  const sel = document.getElementById('lpreset');
+  sel.innerHTML = '<option value="">— Escriviu el vostre problema —</option>' + Object.entries(PROB).map(([k, p]) => `<option value="${k}">${p.nom}</option>`).join('');
+  sel.value = 'coop';
+  const load = k => { const P = PROB[k]; if (!P) return; document.getElementById('lcons').value = P.cons.join('\n'); document.getElementById('lp').value = P.obj[0]; document.getElementById('lq').value = P.obj[1]; document.getElementById('lsense').value = P.sense; };
+  load('coop');
+  sel.addEventListener('change', () => { load(sel.value); labSolve(); });
+  document.getElementById('lresol').addEventListener('click', labSolve);
+  document.getElementById('lk').addEventListener('input', labDrawK);
+  document.getElementById('lcopy').addEventListener('click', async e => {
+    const t = document.getElementById('lggbtxt').textContent;
+    try { await navigator.clipboard.writeText(t); e.target.textContent = 'Copiat!'; } catch (_) { e.target.textContent = 'Seleccioneu el text i copieu-lo'; }
+    setTimeout(() => e.target.textContent = 'Copia les ordres', 1800);
+  });
+  document.getElementById('lsend').addEventListener('click', () => { if (LAB) GGB.run('lab', LAB.cmds, LAB.ggbView); });
+}
+function labSolve() {
+  const err = document.getElementById('lerr'), out = document.getElementById('lres');
+  err.textContent = '';
+  let C;
+  try {
+    C = document.getElementById('lcons').value.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLin);
+    if (C.length < 2) throw 'Calen almenys dues restriccions.';
+  } catch (e) { err.textContent = e; out.innerHTML = ''; return; }
+  const p = parseFloat(document.getElementById('lp').value) || 0, q = parseFloat(document.getElementById('lq').value) || 0, sense = document.getElementById('lsense').value;
+  const r = analyze(C, [p, q], sense), view = autoView(C);
+  const zname = 'z = ' + (linTxt(p, q, '<=', 0).replace(/ ≤ 0$/, '') || '0');
+  const msg = {
+    infactible: 'Problema infactible: la regió és buida.',
+    nofitat: `No té ${sense === 'max' ? 'màxim' : 'mínim'}: la regió no és fitada i z ${sense === 'max' ? 'creix' : 'decreix'} indefinidament.`,
+    segment: `Infinites solucions: tot el segment entre ${r.optPts.map(v => pt(v.x, v.y)).join(' i ')}, amb z = ${fmt(r.best)}.`,
+    semirecta: `Infinites solucions al llarg d'una semirecta que surt de ${r.optPts[0] ? pt(r.optPts[0].x, r.optPts[0].y) : ''}, amb z = ${fmt(r.best)}.`,
+    unica: r.optPts[0] ? `Solució única: ${pt(r.optPts[0].x, r.optPts[0].y, fmt)}, amb z = ${fmt(r.best)}.` : '',
+    constant: 'La funció objectiu és constant.',
+  }[r.status] || '';
+  out.innerHTML = `<p class="veredicte">${msg}</p><p style="font-size:.9rem;color:var(--ink-soft)">Regió ${r.status === 'infactible' ? 'buida' : r.bounded ? 'fitada' : 'no fitada'} · ${r.V.length} vèrtexs · ${sense === 'max' ? 'maximitzar' : 'minimitzar'} ${zname}</p>` +
+    (r.V.length ? `<div class="taula-wrap"><table><thead><tr><th>Vèrtex</th><th>Rectes que s'hi tallen</th><th class="num">z</th></tr></thead><tbody>${sortV(r.V).map(v => `<tr class="${r.optPts.includes(v) && r.status !== 'nofitat' ? 'opt' : ''}"><td>${pt(v.x, v.y, fmt)}</td><td class="mono" style="font-size:.85rem">${C[v.i].txt} · ${C[v.j].txt}</td><td class="num">${fmt(v.z)}</td></tr>`).join('')}</tbody></table></div>` : '') +
+    (r.status === 'nofitat' ? '<p class="errlab">Atenció: els valors dels vèrtexs no donen l\'òptim en aquest cas.</p>' : '');
+  // rang del lliscador de nivell
+  const corners = [[view.x0, view.y0], [view.x1, view.y0], [view.x0, view.y1], [view.x1, view.y1]].map(([x, y]) => p * x + q * y);
+  const lk = document.getElementById('lk');
+  lk.min = Math.min(...corners); lk.max = Math.max(...corners); lk.step = 'any';
+  lk.value = r.best != null ? r.best : (+lk.min + +lk.max) / 2;
+  // ordres GeoGebra
+  const toG = k => linTxt(k.a, k.b, k.op, k.c, true);
+  const lines = [];
+  lines.push('R: ' + C.map(k => '(' + toG(k) + ')').join(' && '));
+  lines.push('SetColor(R, "#EA5B0C")');
+  const zl = linTxt(p, q, '<=', 0, true).replace(/ <= 0$/, '') || '0';
+  lines.push(`f(x, y) = ${zl}`);
+  sortV(r.V).forEach((v, i) => lines.push(`${'ABCDEFGHIJ'[i] || 'V' + i} = (${fmtG(v.x)}, ${fmtG(v.y)})`));
+  if (r.V.length) lines.push('{' + sortV(r.V).map((v, i) => 'f(' + ('ABCDEFGHIJ'[i] || 'V' + i) + ')').join(', ') + '}');
+  lines.push(`k = Slider(${fmtG(+lk.min)}, ${fmtG(+lk.max)}, ${fmtG((lk.max - lk.min) / 100)})`);
+  lines.push(`z: ${zl} = k`);
+  document.getElementById('lggbtxt').textContent = lines.join('\n');
+  const ggbView = [view.x0, view.y0, view.x1, view.y1].map(v => Math.round(v * 100) / 100);
+  LAB = { C, p, q, r, view, sense, cmds: lines.concat(['SetLineStyle(z, 1)', 'SetColor(z, "black")', r.best != null ? `SetValue(k, ${fmtG(r.best)})` : 'SetValue(k, 0)']), ggbView };
+  labDrawK();
+}
+function labDrawK() {
+  if (!LAB) return;
+  const k = +document.getElementById('lk').value;
+  document.getElementById('lko').textContent = fmtN(k);
+  draw(document.getElementById('lplot'), { C: LAB.C, showV: true, obj: [LAB.p, LAB.q], k, opt: LAB.r.status === 'nofitat' ? null : LAB.r, view: LAB.view, title: 'Laboratori' });
+}
+
+/* ==========================================================================
+   13. AUTOAVALUACIÓ I CRONÒMETRE
+   ========================================================================== */
+const AUTO = ['Represento un semiplà i el comprovo amb un punt de prova.', 'Represento la regió factible d\'un sistema d\'inequacions.', 'Defineixo variables, funció objectiu i restriccions a partir d\'un enunciat.', 'Calculo els vèrtexs resolent sistemes 2×2.', 'Trobo l\'òptim i explico per què és en un vèrtex.', 'Reconec quan hi ha infinites solucions, quan el problema no és fitat i quan és infactible.', 'Tracto correctament les solucions enteres.', 'Interpreto la solució en context (recursos esgotats i sobrants).', 'Faig servir GeoGebra per comprovar un problema.'];
+function renderAuto() {
+  const h = document.getElementById('auto'); let saved = {};
+  try { saved = JSON.parse(localStorage.getItem('pl-macs2-auto') || '{}'); } catch (_) { }
+  h.innerHTML = AUTO.map((t, i) => `<div class="auto-item"><span>${t}</span><select data-i="${i}" aria-label="${t}"><option value="">—</option><option>Encara no</option><option>Amb ajuda</option><option>Sol/a</option><option>Ho podria explicar</option></select></div>`).join('') + '<p id="autores" style="margin:.8rem 0 0;font-size:.95rem"></p>';
+  const upd = () => {
+    const vals = [...h.querySelectorAll('select')].map(s => s.value);
+    const fl = vals.map((v, i) => (v === 'Encara no' || v === 'Amb ajuda') ? i : -1).filter(i => i >= 0);
+    document.getElementById('autores').innerHTML = fl.length ? '<b>Per reforçar:</b> ' + fl.map(i => AUTO[i].toLowerCase()).join(' · ') + ' Repasseu Explica i feu els exercicis del bloc corresponent.' : (vals.every(Boolean) ? '<b>Molt bé!</b> Passeu als problemes PAU i a la prova.' : '');
+  };
+  h.querySelectorAll('select').forEach(s => {
+    s.value = saved[s.dataset.i] || '';
+    s.addEventListener('change', () => { saved[s.dataset.i] = s.value; try { localStorage.setItem('pl-macs2-auto', JSON.stringify(saved)); } catch (_) { } upd(); });
+  });
+  upd();
+}
+function initCrono() {
+  let t = null, s = 0;
+  const b = document.getElementById('cronobtn'), o = document.getElementById('crono');
+  b.addEventListener('click', () => {
+    if (t) { clearInterval(t); t = null; b.textContent = 'Simulacre: cronòmetre de 22 min per exercici'; o.textContent = ''; return; }
+    s = 22 * 60; b.textContent = 'Atura el cronòmetre';
+    const tick = () => { o.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; if (s-- <= 0) { clearInterval(t); t = null; o.textContent = 'Temps!'; b.textContent = 'Simulacre: cronòmetre de 22 min per exercici'; } };
+    tick(); t = setInterval(tick, 1000);
+  });
+}
+
+/* ==========================================================================
+   14. ARRENCADA
+   ========================================================================== */
+function typeset(node) {
+  if (window.renderMathInElement) renderMathInElement(node, { delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }], throwOnError: false });
+}
+function boot() {
+  document.getElementById('pau-list').innerHTML = PAU_HTML;
+  document.getElementById('prova').innerHTML = PROVA_HTML;
+  ['diag', 'explora', 'explica', 'sortida'].forEach(renderQuiz);
+  renderBanc(); renderTipus(); renderAuto(); initCrono();
+  Joc.init(); Semi.init(); Regio.init(); Nivell.init(); Casos.init(); labInit();
+  // figura de l'exercici PAU 4 (sense recta de nivell ni etiquetes de vèrtex)
+  draw(document.getElementById('pau4fig'), { C: PROB.pau4.C, labels: false, showV: false, view: { x0: -1, x1: 8, y0: -1, y1: 7 }, title: 'Regió de l\'exercici 4' });
+  typeset(document.body);
+  show(location.hash.slice(1) || 'inici');
+}
+if (document.readyState === 'complete') boot(); else window.addEventListener('load', boot);
+</script>
+</body>
+</html>
